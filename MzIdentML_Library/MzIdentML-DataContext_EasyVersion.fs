@@ -81,7 +81,7 @@ module EntityTypes =
           mutable MidInitials    : string
           mutable LastName       : string
           mutable Organizations  : List<Organization>
-          mutable ContactDetails : List<CVParam>
+          mutable Details        : List<CVParam>
           RowVersion             : DateTime
           //CVParams_Organization   : List<CVParam>
           //UserParams_Organization : List<UserParam>
@@ -119,7 +119,7 @@ module EntityTypes =
          {
           [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
           ID                  : int
-          mutable SubSample   : string
+          mutable SubSampleID : string
           RowVersion          : DateTime
          }
 
