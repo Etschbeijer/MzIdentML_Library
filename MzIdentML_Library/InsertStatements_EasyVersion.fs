@@ -436,8 +436,8 @@ module ObjectHandlers =
                 sample
 
            static member addSubSamples
-                (sample:Sample) (subdSamples:seq<SubSample>) =
-                let result = sample.SubSamples <- addCollectionToList sample.SubSamples subdSamples
+                (sample:Sample) (subSamples:seq<SubSample>) =
+                let result = sample.SubSamples <- addCollectionToList sample.SubSamples subSamples
                 sample
 
            static member addDetails
@@ -538,6 +538,56 @@ module ObjectHandlers =
                 (addToContextWithExceptionCheck context item)
 
            static member insert (context:MzIdentMLContext) (item:SubstitutionModification) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type PeptideHandler =
+           static member init
+                (
+                    id                         : int,
+                    peptideSequence            : string,
+                    ?name                      : string,                    
+                    ?modifications             : seq<Modification>,
+                    ?substitutionModifications : seq<SubstitutionModification>,
+                    ?details                   : seq<CVParam>
+                ) =
+                let name'                      = defaultArg name null
+                let modifications'             = convertOptionToList modifications
+                let substitutionModifications' = convertOptionToList substitutionModifications
+                let details'                   = convertOptionToList details
+                {
+                    Peptide.ID                        = 0
+                    Peptide.Name                      = name'
+                    Peptide.PeptideSequence           = peptideSequence
+                    Peptide.Modifications             = modifications'
+                    Peptide.SubstitutionModifications = substitutionModifications'
+                    Peptide.Details                   = details'
+                    Peptide.RowVersion                = DateTime.Now
+                }
+
+           static member addName
+                (peptide:Peptide) (name:string) =
+                peptide.Name <- name
+
+           static member addModifications
+                (peptide:Peptide) (modifications:seq<Modification>) =
+                let result = peptide.Modifications <- addCollectionToList peptide.Modifications modifications
+                peptide
+
+           static member addSubstitutionModifications
+                (peptide:Peptide) (substitutionModifications:seq<SubstitutionModification>) =
+                let result = peptide.SubstitutionModifications <- addCollectionToList peptide.SubstitutionModifications substitutionModifications
+                peptide
+
+           static member addDetails
+                (peptide:Peptide) (details:seq<CVParam>) =
+                let result = peptide.Details <- addCollectionToList peptide.Details details
+                peptide
+
+           static member addToContext (context:MzIdentMLContext) (item:Peptide) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Peptide) =
                 (addToContextWithExceptionCheck context item) |> ignore
                 insertWithExceptionCheck context
 
