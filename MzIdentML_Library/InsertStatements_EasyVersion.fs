@@ -112,19 +112,19 @@ module ObjectHandlers =
                 }
 
            static member addName
-                (term : Term) (name : string) =
+                (term:Term) (name:string) =
                 term.Name <- name
                 term
 
            static member addOntology
-                (term      : Term) (ontology : Ontology) =
+                (term:Term) (ontology:Ontology) =
                 term.Ontology <- ontology
                 term
 
-            static member addToContext (context  : MzIdentMLContext) (item : Term) =
+            static member addToContext (context:MzIdentMLContext) (item:Term) =
                     addToContextWithExceptionCheck context item
 
-            static member addAndInsert (context  : MzIdentMLContext) (item : Term) =
+            static member addAndInsert (context:MzIdentMLContext) (item:Term) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
         
@@ -143,20 +143,20 @@ module ObjectHandlers =
                 }
 
             static member addTerm
-                (ontology : Ontology) (term : Term) =
+                (ontology:Ontology) (term:Term) =
                 let result = ontology.Terms <- addToList ontology.Terms term
                 ontology
 
 
             static member addTerms
-                (ontology : Ontology) (terms : seq<Term>) =
+                (ontology:Ontology) (terms:seq<Term>) =
                 let result = ontology.Terms <- addCollectionToList ontology.Terms terms
                 ontology
 
-            static member addToContext (context  : MzIdentMLContext) (item : Ontology) =
+            static member addToContext (context:MzIdentMLContext) (item:Ontology) =
                 addToContextWithExceptionCheck context item
 
-            static member insertIntoDB (context  : MzIdentMLContext) (item : Ontology) =
+            static member insertIntoDB (context:MzIdentMLContext) (item:Ontology) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
             
@@ -184,43 +184,43 @@ module ObjectHandlers =
                     RowVersion = DateTime.Now
                 }
            static member addValue
-                (cvParam : CVParam) (value : string) =
+                (cvParam:CVParam) (value:string) =
                 cvParam.Value <- value
                 cvParam
 
            static member addUnit
-                (cvParam : CVParam) (unit : Term) =
+                (cvParam:CVParam) (unit:Term) =
                 cvParam.Unit <- unit
                 cvParam
 
            static member addUnitName
-                (cvParam   : CVParam) (unitName : string) =
+                (cvParam:CVParam) (unitName:string) =
                 cvParam.UnitName <- unitName
                 cvParam
 
-            static member addToContext (context  : MzIdentMLContext) (item : CVParam) =
+            static member addToContext (context:MzIdentMLContext) (item:CVParam) =
                     (addToContextWithExceptionCheck context item)
 
-            static member insert (context  : MzIdentMLContext) (item : CVParam) =
+            static member insert (context:MzIdentMLContext) (item:CVParam) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
     type AnalysisSoftwareHandler =
            static member init
                 (
-                    id                      : int,
-                    softwareName            : CVParam,
-                    ?name                   : string,
-                    ?uri                    : string,
-                    ?version                : string,
-                    ?customizations         : string,
-                    ?contactRole            : ContactRole
+                    id              : int,
+                    softwareName    : CVParam,
+                    ?name           : string,
+                    ?uri            : string,
+                    ?version        : string,
+                    ?customizations : string,
+                    ?contactRole    : ContactRole
                 ) =
-                let name'             = defaultArg name null
-                let uri'              = defaultArg uri null
-                let version'          = defaultArg version null
-                let customizations'   = defaultArg customizations null
-                let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
+                let name'           = defaultArg name null
+                let uri'            = defaultArg uri null
+                let version'        = defaultArg version null
+                let customizations' = defaultArg customizations null
+                let contactRole'    = defaultArg contactRole Unchecked.defaultof<ContactRole>
                 {
                     AnalysisSoftware.ID             = id;
                     AnalysisSoftware.Name           = name';
@@ -232,29 +232,29 @@ module ObjectHandlers =
                     AnalysisSoftware.RowVersion     = DateTime.Now
                 }
            static member addName
-                (analysisSoftware : AnalysisSoftware) (name : string) =
+                (analysisSoftware:AnalysisSoftware) (name:string) =
                 analysisSoftware.Name <- name
                 analysisSoftware
            static member addURI
-                (analysisSoftware : AnalysisSoftware) (uri : string) =
+                (analysisSoftware:AnalysisSoftware) (uri:string) =
                 analysisSoftware.URI <- uri
                 analysisSoftware
            static member addVersion
-                (analysisSoftware : AnalysisSoftware) (version : string) =
+                (analysisSoftware:AnalysisSoftware) (version:string) =
                 analysisSoftware.Version <- version
                 analysisSoftware
            static member addCustomization
-                (analysisSoftware : AnalysisSoftware) (customizations : string) =
+                (analysisSoftware:AnalysisSoftware) (customizations:string) =
                 analysisSoftware.Customizations <- customizations
                 analysisSoftware
            static member addCustomizations
-                (analysisSoftware : AnalysisSoftware) (contactRole     : ContactRole) =
+                (analysisSoftware:AnalysisSoftware) (contactRole:ContactRole) =
                 analysisSoftware.ContactRole <- contactRole
                 analysisSoftware
-            static member addToContext (context  : MzIdentMLContext) (item : AnalysisSoftware) =
+            static member addToContext (context:MzIdentMLContext) (item:AnalysisSoftware) =
                     (addToContextWithExceptionCheck context item)
 
-            static member insert (context  : MzIdentMLContext) (item : AnalysisSoftware) =
+            static member insert (context:MzIdentMLContext) (item:AnalysisSoftware) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -269,35 +269,35 @@ module ObjectHandlers =
                     ?details       : seq<CVParam>,
                     ?organizations : seq<Organization> 
                 ) =
-                let name'              = defaultArg name null
-                let firstName'         = defaultArg firstName null
-                let midInitials'       = defaultArg midInitials null
-                let lastName'          = defaultArg lastName null
+                let name'        = defaultArg name null
+                let firstName'   = defaultArg firstName null
+                let midInitials' = defaultArg midInitials null
+                let lastName'    = defaultArg lastName null
                 {
-                    Person.ID                = id;
-                    Person.Name              = name';
-                    Person.FirstName         = firstName';
-                    Person.MidInitials       = midInitials';
-                    Person.LastName          = lastName';
-                    Person.Details           = convertOptionToList details;
-                    Person.Organizations     = convertOptionToList organizations;
-                    Person.RowVersion        = DateTime.Now
+                    Person.ID            = id;
+                    Person.Name          = name';
+                    Person.FirstName     = firstName';
+                    Person.MidInitials   = midInitials';
+                    Person.LastName      = lastName';
+                    Person.Details       = convertOptionToList details;
+                    Person.Organizations = convertOptionToList organizations;
+                    Person.RowVersion    = DateTime.Now
                 }
 
            static member addName
-                (person : Person) (name : string) =
+                (person:Person) (name:string) =
                 person.Name <- name
                 person
            static member addFirstName
-                (person : Person) (firstName : string) =
+                (person:Person) (firstName:string) =
                 person.FirstName <- firstName
                 person
            static member addMidInitials
-                (person : Person) (midInitials : string) =
+                (person:Person) (midInitials:string) =
                 person.MidInitials <- midInitials
                 person
            static member addLastName
-                (person : Person) (lastName : string) =
+                (person:Person) (lastName:string) =
                 person.LastName <- lastName
                 person
            static member addDetail (person:Person) (detail:CVParam) =
@@ -305,126 +305,199 @@ module ObjectHandlers =
                 person
 
            static member addDetails
-                (person : Person) (details : seq<CVParam>) =
+                (person:Person) (details:seq<CVParam>) =
                 let result = person.Details <- addCollectionToList person.Details details
                 person
 
            static member addOrganization
-                (person : Person) (organization:Organization) =
+                (person:Person) (organization:Organization) =
                 let result = person.Organizations <- addToList person.Organizations organization
                 person
 
            static member addOrganizations
-                (person: Person) (organizations : seq<Organization>) =
+                (person:Person) (organizations:seq<Organization>) =
                 let result = person.Organizations <- addCollectionToList person.Organizations organizations
                 person
 
-            static member addToContext (context  : MzIdentMLContext) (item : Person) =
+            static member addToContext (context:MzIdentMLContext) (item:Person) =
                     (addToContextWithExceptionCheck context item)
 
-            static member insert (context  : MzIdentMLContext) (item : Person) =
+            static member insert (context:MzIdentMLContext) (item:Person) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
     type OrganizationHandler =
            static member init
                 (
-                    id                       : int,
-                    ?name                    : string,
-                    ?details                 : seq<CVParam>,
-                    ?parent                  : string
+                    id       : int,
+                    ?name    : string,
+                    ?details : seq<CVParam>,
+                    ?parent  : string
                 ) =
-                let name'                    = defaultArg name null
-                let details'                 = convertOptionToList details
-                let parent'                  = defaultArg parent null
+                let name'    = defaultArg name null
+                let details' = convertOptionToList details
+                let parent'  = defaultArg parent null
                 {
-                    Organization.ID                = id;
-                    Organization.Name              = name';
-                    Organization.Details           = details';
-                    Organization.Parent            = parent';
-                    Organization.RowVersion        = DateTime.Now
+                    Organization.ID         = id;
+                    Organization.Name       = name';
+                    Organization.Details    = details';
+                    Organization.Parent     = parent';
+                    Organization.RowVersion = DateTime.Now
                 }
 
            static member addName
-                (organization : Organization) (name  : string) =
+                (organization:Organization) (name:string) =
                 organization.Name <- name
 
            static member addParent
-                (organization : Organization) (parent: string) =
+                (organization:Organization) (parent:string) =
                 organization.Parent <- parent
 
            static member addDetail
-                (organization : Organization) (detail: CVParam) =
+                (organization:Organization) (detail:CVParam) =
                 let result = organization.Details <- addToList organization.Details detail
                 organization
 
            static member addDetails
-                (organization : Organization) (details  : seq<CVParam>) =
+                (organization:Organization) (details:seq<CVParam>) =
                 let result = organization.Details <- addCollectionToList organization.Details details
                 organization
 
-            static member addToContext (context  : MzIdentMLContext) (item : Organization) =
+           static member addToContext (context:MzIdentMLContext) (item:Organization) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Organization) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type SearchDatabaseHandler =
+           static member init
+                (
+                    id                           : int,
+                    location                     : string,
+                    fileFormat                   : CVParam,
+                    databaseName                 : CVParam,
+                    ?name                        : string,                    
+                    ?numDatabaseSequences        : string,
+                    ?numResidues                 : string,
+                    ?releaseDate                 : DateTime,
+                    ?version                     : string,
+                    ?externalFormatDocumentation : string,
+                    ?details                     : seq<CVParam>             
+                ) =
+                let name'                        = defaultArg name null
+                let numDatabaseSequences'        = defaultArg numDatabaseSequences null
+                let numResidues'                 = defaultArg numResidues null
+                let releaseDate'                 = defaultArg releaseDate Unchecked.defaultof<DateTime>
+                let version'                     = defaultArg version null
+                let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
+                let details'                     = convertOptionToList details
+                {
+                    SearchDatabase.ID                          = id;
+                    SearchDatabase.Name                        = name';
+                    SearchDatabase.Location                    = location;
+                    SearchDatabase.NumDatabaseSequences        = numDatabaseSequences';
+                    SearchDatabase.NumResidues                 = numResidues';
+                    SearchDatabase.ReleaseDate                 = releaseDate';
+                    SearchDatabase.Version                     = version';
+                    SearchDatabase.ExternalFormatDocumentation = externalFormatDocumentation';
+                    SearchDatabase.FileFormat                  = fileFormat;
+                    SearchDatabase.DatabaseName                = databaseName;
+                    SearchDatabase.Details                     =  details';
+                    SearchDatabase.RowVersion                  = DateTime.Now.Date
+                }
+
+           static member addName
+                (searchDatabase:SearchDatabase) (name:string) =
+                searchDatabase.Name <- name
+
+           static member addNumDatabaseSequences
+                (searchDatabase:SearchDatabase) (numDatabaseSequences:string) =
+                searchDatabase.NumDatabaseSequences <- numDatabaseSequences
+
+           static member addNumResidues
+                (searchDatabase:SearchDatabase) (numResidues:string) =
+                searchDatabase.NumResidues <- numResidues
+
+           static member addReleaseDate
+                (searchDatabase:SearchDatabase) (releaseDate:DateTime) =
+                searchDatabase.ReleaseDate <- releaseDate
+
+           static member addVersion
+                (searchDatabase:SearchDatabase) (version:string) =
+                searchDatabase.Version <- version
+
+           static member addExternalFormatDocumentation
+                (searchDatabase:SearchDatabase) (externalFormatDocumentation:string) =
+                searchDatabase.Version <- externalFormatDocumentation
+
+           static member addDetails
+                (searchDatabase:SearchDatabase) (details:seq<CVParam>) =
+                let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
+                searchDatabase
+
+            static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
                     (addToContextWithExceptionCheck context item)
 
-            static member insert (context  : MzIdentMLContext) (item : Organization) =
+            static member insert (context:MzIdentMLContext) (item:DBSequence) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
     type DBSequenceHandler =
            static member init
                 (
-                    id                     : int,
-                    accession              : string,
-                    searchDatabase         : SearchDatabase,
-                    ?name                  : string,
-                    ?sequence              : string,
-                    ?length                : int,
-                    ?details               : seq<CVParam>
-                
+                    id             : int,
+                    accession      : string,
+                    searchDatabase : SearchDatabase,
+                    ?name          : string,
+                    ?sequence      : string,
+                    ?length        : int,
+                    ?details       : seq<CVParam>                
                 ) =
-                let name'                    = defaultArg name null
-                let sequence'                = defaultArg sequence null
-                let length'                  = defaultArg length Unchecked.defaultof<int>
-                let details'                 = convertOptionToList details
+                let name'     = defaultArg name null
+                let sequence' = defaultArg sequence null
+                let length'   = defaultArg length Unchecked.defaultof<int>
+                let details'  = convertOptionToList details
                 {
-                    DBSequence.ID                    = id;
-                    DBSequence.Name                  = name';
-                    DBSequence.Accession             = accession;
-                    DBSequence.SearchDatabase        = searchDatabase;
-                    DBSequence.Sequence              = sequence';
-                    DBSequence.Length                = length';
-                    DBSequence.Details               = details';
-                    DBSequence.RowVersion            = DateTime.Now
+                    DBSequence.ID             = id;
+                    DBSequence.Name           = name';
+                    DBSequence.Accession      = accession;
+                    DBSequence.SearchDatabase = searchDatabase;
+                    DBSequence.Sequence       = sequence';
+                    DBSequence.Length         = length';
+                    DBSequence.Details        = details';
+                    DBSequence.RowVersion     = DateTime.Now
                 }
 
            static member addName
-                (dbSequence : DBSequence) (name : string) =
+                (dbSequence:DBSequence) (name:string) =
                 dbSequence.Name <- name
 
            static member addSequence
-                (dbSequence : DBSequence) (sequence  : string) =
+                (dbSequence:DBSequence) (sequence:string) =
                 dbSequence.Sequence <- sequence
 
            static member addLength
-                (dbSequence : DBSequence) (length : int) =
+                (dbSequence:DBSequence) (length:int) =
                 dbSequence.Length <- length
 
            static member addDetail
-                (dbSequence : DBSequence) (detail: CVParam) =
+                (dbSequence:DBSequence) (detail:CVParam) =
                 let result = dbSequence.Details <- addToList dbSequence.Details detail
                 dbSequence
 
            static member addDetails
-                (dbSequence : DBSequence) (details: seq<CVParam>) =
+                (dbSequence:DBSequence) (details:seq<CVParam>) =
                 let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                 dbSequence
 
-            static member addToContext (context  : MzIdentMLContext) (item : DBSequence) =
+            static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
                     (addToContextWithExceptionCheck context item)
 
-            static member insert (context  : MzIdentMLContext) (item : DBSequence) =
+            static member insert (context:MzIdentMLContext) (item:DBSequence) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
+
 
 module test =
 //Apply functions

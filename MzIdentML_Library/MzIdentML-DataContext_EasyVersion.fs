@@ -75,14 +75,14 @@ module EntityTypes =
          Person =
          {
           [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-          ID                    : int
-          mutable Name          : string
-          mutable FirstName     : string
-          mutable MidInitials   : string
-          mutable LastName      : string
-          mutable Organizations : List<Organization>
-          mutable Details       : List<CVParam>
-          RowVersion            : DateTime
+          ID                     : int
+          mutable Name           : string
+          mutable FirstName      : string
+          mutable MidInitials    : string
+          mutable LastName       : string
+          mutable Organizations  : List<Organization>
+          mutable ContactDetails : List<CVParam>
+          RowVersion             : DateTime
           //CVParams_Organization   : List<CVParam>
           //UserParams_Organization : List<UserParam>
          }
