@@ -623,6 +623,32 @@ module ObjectHandlers =
                 (addToContextWithExceptionCheck context item) |> ignore
                 insertWithExceptionCheck context
 
+    type MeasureHandler =
+           static member init
+                (
+                    id       : int,
+                    details : seq<CVParam>,
+                    ?name    : string 
+                ) =
+                let name'                      = defaultArg name null
+                {
+                    TranslationTable.ID          = 0
+                    TranslationTable.Name        = name'
+                    TranslationTable.Details     = details |> List
+                    TranslationTable.RowVersion  = DateTime.Now
+                }
+
+           static member addName
+                (measure:Measure) (name:string) =
+                measure.Name <- name
+
+           static member addToContext (context:MzIdentMLContext) (item:Measure) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Measure) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
     type SearchDatabaseHandler =
            static member init
                 (
