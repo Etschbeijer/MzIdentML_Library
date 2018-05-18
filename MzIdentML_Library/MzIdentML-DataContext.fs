@@ -3952,9 +3952,9 @@ module InsertStatements =
                            )   
                        )
 
-    let createTermCustom ?id name =
+    let createTermCustom id name =
         {
-         Term.ID         = ?id
+         Term.ID         = id
          Term.Name       = name
          //Term.Ontology   = ontology
          Term.RowVersion = DateTime.Now.Date
