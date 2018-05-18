@@ -145,7 +145,7 @@ module EntityTypes =
           mutable Residues              : string
           mutable Location              : int
           mutable MonoIsotopicMassDelta : float
-          mutable AvgMassDelta          : int
+          mutable AvgMassDelta          : float
           Details                       : List<CVParam>
           RowVersion                    : DateTime
          }
