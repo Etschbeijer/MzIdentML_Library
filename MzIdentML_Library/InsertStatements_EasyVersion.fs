@@ -134,10 +134,9 @@ module ObjectHandlers =
                     id     : string,
                     ?terms : seq<Term>
                 ) =
-                let id'        = id
                 let terms'     = convertOptionToList terms
                 {
-                    ID         = id';
+                    ID         = id;
                     Terms      = terms';
                     RowVersion = DateTime.Now
                 }
@@ -164,18 +163,19 @@ module ObjectHandlers =
 
            static member init
                 (
-                    id        : int,
                     name      : string,
                     term      : Term,
+                    ?id       : int,
                     ?value    : string,
                     ?unit     : Term,
                     ?unitName : string
                 ) =
+                let id'       = defaultArg id 0
                 let value'    = defaultArg value null
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                 let unitName' = defaultArg unitName null
                 {
-                    ID         = id;
+                    ID         = id';
                     Name       = name;
                     Value      = value';
                     Term       = term;
@@ -208,16 +208,17 @@ module ObjectHandlers =
     type OrganizationHandler =
            static member init
                 (
-                    id       : int,
+                    ?id      : int,
                     ?name    : string,
                     ?details : seq<CVParam>,
                     ?parent  : string
                 ) =
+                let id'      = defaultArg id 0
                 let name'    = defaultArg name null
                 let details' = convertOptionToList details
                 let parent'  = defaultArg parent null
                 {
-                    Organization.ID         = id;
+                    Organization.ID         = id';
                     Organization.Name       = name';
                     Organization.Details    = details';
                     Organization.Parent     = parent';
@@ -252,7 +253,7 @@ module ObjectHandlers =
     type PersonHandler =
            static member init
                 (
-                    id              : int,
+                    ?id             : int,
                     ?name           : string,
                     ?firstName      : string,
                     ?midInitials    : string,
@@ -260,12 +261,13 @@ module ObjectHandlers =
                     ?contactDetails : seq<CVParam>,
                     ?organizations  : seq<Organization> 
                 ) =
+                let id'          = defaultArg id 0
                 let name'        = defaultArg name null
                 let firstName'   = defaultArg firstName null
                 let midInitials' = defaultArg midInitials null
                 let lastName'    = defaultArg lastName null
                 {
-                    Person.ID            = id;
+                    Person.ID            = id';
                     Person.Name          = name';
                     Person.FirstName     = firstName';
                     Person.MidInitials   = midInitials';
@@ -319,9 +321,14 @@ module ObjectHandlers =
 
     type ContactRoleHandler =
            static member init
-                (id:int) (person:Person) (role:CVParam) =
+                (   
+                    person : Person, 
+                    role   : CVParam,
+                    ?id    : int
+                ) =
+                let id' = defaultArg id 0
                 {
-                     ContactRole.ID         = id
+                     ContactRole.ID         = id'
                      ContactRole.Person     = person
                      ContactRole.Role       = role
                      ContactRole.RowVersion = DateTime.Now.Date
@@ -330,21 +337,22 @@ module ObjectHandlers =
     type AnalysisSoftwareHandler =
            static member init
                 (
-                    id                 : int,
                     softwareName       : CVParam,
+                    ?id                : int,
                     ?name              : string,
                     ?uri               : string,
                     ?version           : string,
                     ?customizations    : string,
                     ?softwareDeveloper : ContactRole
                 ) =
+                let id'             = defaultArg id 0
                 let name'           = defaultArg name null
                 let uri'            = defaultArg uri null
                 let version'        = defaultArg version null
                 let customizations' = defaultArg customizations null
                 let contactRole'    = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
                 {
-                    AnalysisSoftware.ID             = id;
+                    AnalysisSoftware.ID             = id';
                     AnalysisSoftware.Name           = name';
                     AnalysisSoftware.URI            = uri';
                     AnalysisSoftware.Version        = version';
@@ -383,12 +391,13 @@ module ObjectHandlers =
     type SubSampleHandler =
            static member init
                 (
-                    id                  : int,
+                    ?id                  : int,
                     ?subSampleID        : string
                 ) =
+                let id'          = defaultArg id 0
                 let subSampleID' = defaultArg subSampleID null
                 {
-                    SubSample.ID          = id;
+                    SubSample.ID          = id';
                     SubSample.SubSampleID = subSampleID';
                     SubSample.RowVersion  = DateTime.Now
                 }
@@ -407,18 +416,19 @@ module ObjectHandlers =
     type SampleHandler =
            static member init
                 (
-                    id            : int,
+                    ?id            : int,
                     ?name         : string,
                     ?contactRoles : seq<ContactRole>,
                     ?subSamples   : seq<SubSample>,
                     ?details      : seq<CVParam>
                 ) =
+                let id'           = defaultArg id 0
                 let name'         = defaultArg name null
                 let contactRoles' = convertOptionToList contactRoles
                 let subSamples'   = convertOptionToList subSamples
                 let details'      = convertOptionToList details
                 {
-                    Sample.ID           = id
+                    Sample.ID           = id'
                     Sample.Name         = name'
                     Sample.ContactRoles = contactRoles'
                     Sample.SubSamples   = subSamples'
@@ -455,19 +465,20 @@ module ObjectHandlers =
     type ModificationHandler =
            static member init
                 (
-                    id                     : int,
                     details                : seq<CVParam>,
+                    ?id                    : int,
                     ?residues              : string,
                     ?location              : int,
                     ?monoIsotopicMassDelta : float,
                     ?avgMassDelta          : float
                 ) =
+                let id'               = defaultArg id 0
                 let residues'         = defaultArg residues null
                 let location'         = defaultArg location Unchecked.defaultof<int>
                 let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                 let avgMassDelta' = defaultArg avgMassDelta Unchecked.defaultof<float>
                 {
-                    Modification.ID                    = id
+                    Modification.ID                    = id'
                     Modification.Details               = details |> List
                     Modification.Residues              = residues'
                     Modification.Location              = location'
@@ -502,18 +513,19 @@ module ObjectHandlers =
     type SubstitutionModificationHandler =
            static member init
                 (
-                    id                     : int,
                     originalResidue        : string,
                     replacementResidue     : string,
+                    ?id                    : int,
                     ?location              : int,
                     ?monoIsotopicMassDelta : float,
                     ?avgMassDelta          : float
                 ) =
-                let location'         = defaultArg location Unchecked.defaultof<int>
+                let id'                    = defaultArg id 0
+                let location'              = defaultArg location Unchecked.defaultof<int>
                 let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
-                let avgMassDelta' = defaultArg avgMassDelta Unchecked.defaultof<float>
+                let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
                 {
-                    SubstitutionModification.ID                    = 0
+                    SubstitutionModification.ID                    = id'
                     SubstitutionModification.OriginalResidue       = originalResidue
                     SubstitutionModification.ReplacementResidue    = replacementResidue
                     SubstitutionModification.Location              = location'
@@ -544,19 +556,20 @@ module ObjectHandlers =
     type PeptideHandler =
            static member init
                 (
-                    id                         : int,
                     peptideSequence            : string,
+                    ?id                        : int,
                     ?name                      : string,                    
                     ?modifications             : seq<Modification>,
                     ?substitutionModifications : seq<SubstitutionModification>,
                     ?details                   : seq<CVParam>
                 ) =
+                let id'                        = defaultArg id 0
                 let name'                      = defaultArg name null
                 let modifications'             = convertOptionToList modifications
                 let substitutionModifications' = convertOptionToList substitutionModifications
                 let details'                   = convertOptionToList details
                 {
-                    Peptide.ID                        = 0
+                    Peptide.ID                        = id'
                     Peptide.Name                      = name'
                     Peptide.PeptideSequence           = peptideSequence
                     Peptide.Modifications             = modifications'
@@ -594,7 +607,7 @@ module ObjectHandlers =
     type TranslationTableHandler =
            static member init
                 (
-                    id       : int,
+                    ?id       : int,
                     ?name    : string,
                     ?details : seq<CVParam>
                 ) =
@@ -626,13 +639,14 @@ module ObjectHandlers =
     type MeasureHandler =
            static member init
                 (
-                    id       : int,
-                    details : seq<CVParam>,
+                    details  : seq<CVParam>,
+                    ?id      : int,
                     ?name    : string 
                 ) =
-                let name'                      = defaultArg name null
+                let id'   = defaultArg id 0
+                let name' = defaultArg name null
                 {
-                    TranslationTable.ID          = 0
+                    TranslationTable.ID          = id'
                     TranslationTable.Name        = name'
                     TranslationTable.Details     = details |> List
                     TranslationTable.RowVersion  = DateTime.Now
@@ -652,10 +666,10 @@ module ObjectHandlers =
     type SearchDatabaseHandler =
            static member init
                 (
-                    id                           : int,
                     location                     : string,
                     fileFormat                   : CVParam,
                     databaseName                 : CVParam,
+                    ?id                          : int,
                     ?name                        : string,                    
                     ?numDatabaseSequences        : string,
                     ?numResidues                 : string,
@@ -664,6 +678,7 @@ module ObjectHandlers =
                     ?externalFormatDocumentation : string,
                     ?details                     : seq<CVParam>             
                 ) =
+                let id'                          = defaultArg id 0
                 let name'                        = defaultArg name null
                 let numDatabaseSequences'        = defaultArg numDatabaseSequences null
                 let numResidues'                 = defaultArg numResidues null
@@ -672,7 +687,7 @@ module ObjectHandlers =
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
                 let details'                     = convertOptionToList details
                 {
-                    SearchDatabase.ID                          = id;
+                    SearchDatabase.ID                          = id';
                     SearchDatabase.Name                        = name';
                     SearchDatabase.Location                    = location;
                     SearchDatabase.NumDatabaseSequences        = numDatabaseSequences';
@@ -725,20 +740,21 @@ module ObjectHandlers =
     type DBSequenceHandler =
            static member init
                 (
-                    id             : int,
                     accession      : string,
                     searchDatabase : SearchDatabase,
+                    ?id            : int,
                     ?name          : string,
                     ?sequence      : string,
                     ?length        : int,
                     ?details       : seq<CVParam>                
                 ) =
+                let id'       = defaultArg id 0
                 let name'     = defaultArg name null
                 let sequence' = defaultArg sequence null
                 let length'   = defaultArg length Unchecked.defaultof<int>
                 let details'  = convertOptionToList details
                 {
-                    DBSequence.ID             = id;
+                    DBSequence.ID             = id';
                     DBSequence.Name           = name';
                     DBSequence.Accession      = accession;
                     DBSequence.SearchDatabase = searchDatabase;
@@ -794,10 +810,10 @@ module test =
     let termIII = TermHandler.addOntology termII ontologyI
     let addTermtoContext = TermHandler.addToContext context termIII
 
-    let cvParam = CVParamHandler.init(0, "Test", termIII)
+    let cvParam = CVParamHandler.init("Test", termIII)
     let addCVtoContext = CVParamHandler.addToContext context cvParam
 
-    let analysisSoftware = AnalysisSoftwareHandler.init(0, cvParam)
+    let analysisSoftware = AnalysisSoftwareHandler.init(cvParam,0)
     let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BoB"
     let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analysisSoftwareName
 
