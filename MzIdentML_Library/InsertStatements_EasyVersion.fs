@@ -460,12 +460,12 @@ module ObjectHandlers =
                     ?residues              : string,
                     ?location              : int,
                     ?monoIsotopicMassDelta : float,
-                    ?avgMassDelta          : int
+                    ?avgMassDelta          : float
                 ) =
                 let residues'         = defaultArg residues null
                 let location'         = defaultArg location Unchecked.defaultof<int>
                 let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
-                let avgMassDelta' = defaultArg avgMassDelta Unchecked.defaultof<int>
+                let avgMassDelta' = defaultArg avgMassDelta Unchecked.defaultof<float>
                 {
                     Modification.ID                    = id
                     Modification.Details               = details |> List
