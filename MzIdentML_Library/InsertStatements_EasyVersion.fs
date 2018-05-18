@@ -663,6 +663,8 @@ module ObjectHandlers =
                 (addToContextWithExceptionCheck context item) |> ignore
                 insertWithExceptionCheck context
 
+//Go on with residue
+
     type SearchDatabaseHandler =
            static member init
                 (
