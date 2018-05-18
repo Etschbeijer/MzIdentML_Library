@@ -499,6 +499,48 @@ module ObjectHandlers =
                 (addToContextWithExceptionCheck context item) |> ignore
                 insertWithExceptionCheck context
 
+    type SubstitutionModificationHandler =
+           static member init
+                (
+                    id                     : int,
+                    originalResidue        : string,
+                    replacementResidue     : string,
+                    ?location              : int,
+                    ?monoIsotopicMassDelta : float,
+                    ?avgMassDelta          : float
+                ) =
+                let location'         = defaultArg location Unchecked.defaultof<int>
+                let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
+                let avgMassDelta' = defaultArg avgMassDelta Unchecked.defaultof<float>
+                {
+                    SubstitutionModification.ID                    = 0
+                    SubstitutionModification.OriginalResidue       = originalResidue
+                    SubstitutionModification.ReplacementResidue    = replacementResidue
+                    SubstitutionModification.Location              = location'
+                    SubstitutionModification.MonoIsotopicMassDelta = monoIsotopicMassDelta'
+                    SubstitutionModification.AvgMassDelta          = avgMassDelta'
+                    SubstitutionModification.RowVersion            = DateTime.Now
+                }
+
+           static member addLocation
+                (substitutionModification:SubstitutionModification) (location:int) =
+                substitutionModification.Location <- location
+
+           static member addMonoIsotopicMassDelta
+                (substitutionModification:SubstitutionModification) (monoIsotopicMassDelta:float) =
+                substitutionModification.MonoIsotopicMassDelta <- monoIsotopicMassDelta
+
+           static member addAvgMassDelta
+                (substitutionModification:SubstitutionModification) (avgMassDelta:float) =
+                substitutionModification.AvgMassDelta <- avgMassDelta
+
+           static member addToContext (context:MzIdentMLContext) (item:SubstitutionModification) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:SubstitutionModification) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
     type SearchDatabaseHandler =
            static member init
                 (

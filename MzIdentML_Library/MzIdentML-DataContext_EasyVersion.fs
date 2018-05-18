@@ -160,7 +160,7 @@ module EntityTypes =
           ReplacementResidue            : string
           mutable Location              : int
           mutable MonoIsotopicMassDelta : float
-          mutable AvgMassDelta          : int
+          mutable AvgMassDelta          : float
           RowVersion                    : DateTime
          }
 
