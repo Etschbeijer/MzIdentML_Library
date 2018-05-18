@@ -404,6 +404,56 @@ module ObjectHandlers =
                 (addToContextWithExceptionCheck context item) |> ignore
                 insertWithExceptionCheck context
 
+    type SampleHandler =
+           static member init
+                (
+                    id            : int,
+                    ?name         : string,
+                    ?contactRoles : seq<ContactRole>,
+                    ?subSamples   : seq<SubSample>,
+                    ?details      : seq<CVParam>
+                ) =
+                let name'         = defaultArg name null
+                let contactRoles' = convertOptionToList contactRoles
+                let subSamples'   = convertOptionToList subSamples
+                let details'      = convertOptionToList details
+                {
+                    Sample.ID           = id
+                    Sample.Name         = name'
+                    Sample.ContactRoles = contactRoles'
+                    Sample.SubSamples   = subSamples'
+                    Sample.Details      = details'
+                    Sample.RowVersion   = DateTime.Now
+                }
+
+           static member addName
+                (subSample:SubSample) (subSampleID:string) =
+                subSample.SubSampleID <- subSampleID
+
+           static member addContactRoles
+                (sample:Sample) (contactRoles:seq<ContactRole>) =
+                let result = sample.ContactRoles <- addCollectionToList sample.ContactRoles contactRoles
+                sample
+
+           static member addSubSamples
+                (sample:Sample) (subdSamples:seq<SubSample>) =
+                let result = sample.SubSamples <- addCollectionToList sample.SubSamples subdSamples
+                sample
+
+           static member addDetails
+                (sample:Sample) (details:seq<CVParam>) =
+                let result = sample.Details <- addCollectionToList sample.Details details
+                sample
+
+           static member addToContext (context:MzIdentMLContext) (item:Sample) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Sample) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+//Go on with Modification
+
     type SearchDatabaseHandler =
            static member init
                 (
