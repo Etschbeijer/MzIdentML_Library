@@ -4,8 +4,6 @@ open System
 open System.ComponentModel.DataAnnotations.Schema
 open Microsoft.EntityFrameworkCore
 open System.Collections.Generic
-open FSharp.Care.IO
-open BioFSharp.IO
 
 
 module EntityTypes =

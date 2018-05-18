@@ -13,8 +13,8 @@ open System
 //open System.ComponentModel.DataAnnotations.Schema
 open Microsoft.EntityFrameworkCore
 open System.Collections.Generic
-open FSharp.Care.IO
-open BioFSharp.IO
+//open FSharp.Care.IO
+//open BioFSharp.IO
 
 
 
@@ -588,6 +588,38 @@ module ObjectHandlers =
                 (addToContextWithExceptionCheck context item)
 
            static member insert (context:MzIdentMLContext) (item:Peptide) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type TranslationTableHandler =
+           static member init
+                (
+                    id       : int,
+                    ?name    : string,
+                    ?details : seq<CVParam>
+                ) =
+                let name'                      = defaultArg name null
+                let details'                   = convertOptionToList details
+                {
+                    TranslationTable.ID          = 0
+                    TranslationTable.Name        = name'
+                    TranslationTable.Details     = details'
+                    TranslationTable.RowVersion  = DateTime.Now
+                }
+
+           static member addName
+                (translationTable:TranslationTable) (name:string) =
+                translationTable.Name <- name
+
+           static member addDetails
+                (translationTable:TranslationTable) (details:seq<CVParam>) =
+                let result = translationTable.Details <- addCollectionToList translationTable.Details details
+                translationTable
+
+           static member addToContext (context:MzIdentMLContext) (item:TranslationTable) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:TranslationTable) =
                 (addToContextWithExceptionCheck context item) |> ignore
                 insertWithExceptionCheck context
 
