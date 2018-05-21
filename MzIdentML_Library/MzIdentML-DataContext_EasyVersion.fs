@@ -337,11 +337,11 @@ module EntityTypes =
          Filter =
          {
           [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-          ID              : int
-          FilterType      : CVParam
-          mutable Include : List<CVParam>
-          mutable Exclude : List<CVParam>
-          RowVersion      : DateTime
+          ID               : int
+          FilterType       : CVParam
+          mutable Includes : List<CVParam>
+          mutable Excludes : List<CVParam>
+          RowVersion       : DateTime
          }
 
     ///The frames in which the nucleic acid sequence has been translated as a space separated list.
@@ -362,18 +362,18 @@ module EntityTypes =
           ID                             : int
           mutable Name                   : string
           AnalysisSoftware               : AnalysisSoftware
-          SearchTye                      : CVParam
+          SearchType                     : CVParam
           mutable AdditionalSearchParams : List<CVParam>
           mutable ModificationParams     : List<SearchModification>
           mutable Enzymes                : List<Enzyme>
           mutable Independent_Enzymes    : bool
-          mutable MassTable              : List<MassTable>
+          mutable MassTables             : List<MassTable>
           mutable FragmentTolerance      : List<CVParam>
           mutable ParentTolerance        : List<CVParam>
           Threshold                      : List<CVParam>
           mutable DatabaseFilters        : List<Filter>
           mutable Frames                 : List<Frame>
-          mutable TranslationTable       : List<TranslationTable>
+          mutable TranslationTables      : List<TranslationTable>
           RowVersion                     : DateTime
          }
 
@@ -425,7 +425,7 @@ module EntityTypes =
           mutable End              : int
           mutable Pre              : string
           mutable Post             : string
-          mutable Frame            : string
+          mutable Frame            : Frame
           mutable IsDecoy          : bool
           mutable TranslationTable : TranslationTable
           mutable Details          : List<CVParam>
@@ -443,8 +443,8 @@ module EntityTypes =
           mutable MassTable              : MassTable
           PassThreshold                  : bool
           Rank                           : int
-          mutable PeptideEvidence        : List<PeptideEvidence>
-          mutable Fragmentation          : List<IonType>
+          mutable PeptideEvidences       : List<PeptideEvidence>
+          mutable Fragmentations         : List<IonType>
           Peptide                        : Peptide
           ChargeState                    : int
           ExperimentalMassToCharge       : float

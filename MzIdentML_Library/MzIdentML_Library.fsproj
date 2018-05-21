@@ -15,6 +15,9 @@
     <Reference Include="BioFSharp.IO">
       <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.IO.dll</HintPath>
     </Reference>
+    <Reference Include="FSharp.Care">
+      <HintPath>..\..\BioFSharp.Mz\src\BioFSharp.Mz\bin\Debug\FSharp.Care.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Care.IO">
       <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\FSharp.Care.IO.dll</HintPath>
     </Reference>

@@ -146,7 +146,6 @@ module ObjectHandlers =
                 let result = ontology.Terms <- addToList ontology.Terms term
                 ontology
 
-
             static member addTerms
                 (ontology:Ontology) (terms:seq<Term>) =
                 let result = ontology.Terms <- addCollectionToList ontology.Terms terms
@@ -281,18 +280,22 @@ module ObjectHandlers =
                 (person:Person) (name:string) =
                 person.Name <- name
                 person
+
            static member addFirstName
                 (person:Person) (firstName:string) =
                 person.FirstName <- firstName
                 person
+
            static member addMidInitials
                 (person:Person) (midInitials:string) =
                 person.MidInitials <- midInitials
                 person
+
            static member addLastName
                 (person:Person) (lastName:string) =
                 person.LastName <- lastName
                 person
+
            static member addDetail (person:Person) (detail:CVParam) =
                 let result = person.Details <- addToList person.Details detail
                 person
@@ -365,22 +368,27 @@ module ObjectHandlers =
                 (analysisSoftware:AnalysisSoftware) (name:string) =
                 analysisSoftware.Name <- name
                 analysisSoftware
+
            static member addURI
                 (analysisSoftware:AnalysisSoftware) (uri:string) =
                 analysisSoftware.URI <- uri
                 analysisSoftware
+
            static member addVersion
                 (analysisSoftware:AnalysisSoftware) (version:string) =
                 analysisSoftware.Version <- version
                 analysisSoftware
+
            static member addCustomization
                 (analysisSoftware:AnalysisSoftware) (customizations:string) =
                 analysisSoftware.Customizations <- customizations
                 analysisSoftware
+
            static member addCustomizations
                 (analysisSoftware:AnalysisSoftware) (contactRole:ContactRole) =
                 analysisSoftware.ContactRole <- contactRole
                 analysisSoftware
+
             static member addToContext (context:MzIdentMLContext) (item:AnalysisSoftware) =
                     (addToContextWithExceptionCheck context item)
 
@@ -440,14 +448,29 @@ module ObjectHandlers =
                 (subSample:SubSample) (subSampleID:string) =
                 subSample.SubSampleID <- subSampleID
 
+           static member addContactRole
+                (sample:Sample) (contactRole:ContactRole) =
+                let result = sample.ContactRoles <- addToList sample.ContactRoles contactRole
+                sample
+
            static member addContactRoles
                 (sample:Sample) (contactRoles:seq<ContactRole>) =
                 let result = sample.ContactRoles <- addCollectionToList sample.ContactRoles contactRoles
                 sample
 
+           static member addSubSample
+                (sample:Sample) (subSample:SubSample) =
+                let result = sample.SubSamples <- addToList sample.SubSamples subSample
+                sample
+
            static member addSubSamples
                 (sample:Sample) (subSamples:seq<SubSample>) =
                 let result = sample.SubSamples <- addCollectionToList sample.SubSamples subSamples
+                sample
+
+           static member addDetail
+                (sample:Sample) (detail:CVParam) =
+                let result = sample.Details <- addToList sample.Details detail
                 sample
 
            static member addDetails
@@ -582,14 +605,29 @@ module ObjectHandlers =
                 (peptide:Peptide) (name:string) =
                 peptide.Name <- name
 
+           static member addModification
+                (peptide:Peptide) (modification:Modification) =
+                let result = peptide.Modifications <- addToList peptide.Modifications modification
+                peptide
+
            static member addModifications
                 (peptide:Peptide) (modifications:seq<Modification>) =
                 let result = peptide.Modifications <- addCollectionToList peptide.Modifications modifications
                 peptide
 
+           static member addSubstitutionModification
+                (peptide:Peptide) (substitutionModification:SubstitutionModification) =
+                let result = peptide.SubstitutionModifications <- addToList peptide.SubstitutionModifications substitutionModification
+                peptide
+
            static member addSubstitutionModifications
                 (peptide:Peptide) (substitutionModifications:seq<SubstitutionModification>) =
                 let result = peptide.SubstitutionModifications <- addCollectionToList peptide.SubstitutionModifications substitutionModifications
+                peptide
+
+           static member addDetail
+                (peptide:Peptide) (detail:CVParam) =
+                let result = peptide.Details <- addToList peptide.Details detail
                 peptide
 
            static member addDetails
@@ -663,7 +701,598 @@ module ObjectHandlers =
                 (addToContextWithExceptionCheck context item) |> ignore
                 insertWithExceptionCheck context
 
-//Go on with residue
+    type ResidueHandler =
+           static member init
+                (
+                    code    : string,
+                    mass    : float,
+                    ?id     : int
+                ) =
+                let id'   = defaultArg id 0
+                {
+                    Residue.ID          = id'
+                    Residue.Code        = code
+                    Residue.Mass        = mass
+                    Residue.RowVersion  = DateTime.Now
+                }
+
+           static member addToContext (context:MzIdentMLContext) (item:Residue) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Residue) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type AmbiguousResidueHandler =
+           static member init
+                (
+                    code    : string,
+                    details : seq<CVParam>,
+                    ?id     : int
+                ) =
+                let id'   = defaultArg id 0
+                {
+                    AmbiguousResidue.ID          = id'
+                    AmbiguousResidue.Code        = code
+                    AmbiguousResidue.Details     = details |> List
+                    AmbiguousResidue.RowVersion  = DateTime.Now
+                }
+
+           static member addToContext (context:MzIdentMLContext) (item:AmbiguousResidue) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:AmbiguousResidue) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type MassTableHandler =
+           static member init
+                (
+                    msLevel           : string,
+                    ?id               : int,
+                    ?name             : string,
+                    ?residue          : seq<Residue>,
+                    ?ambiguousResidue : seq<AmbiguousResidue>,
+                    ?details          : seq<CVParam>
+                ) =
+                let id'               = defaultArg id 0
+                let name'             = defaultArg name null
+                let residue'          = convertOptionToList residue
+                let ambiguousResidue' = convertOptionToList ambiguousResidue
+                let details'          = convertOptionToList details
+                {
+                    MassTable.ID               = id'
+                    MassTable.Name             = name'
+                    MassTable.MSLevel          = msLevel
+                    MassTable.Residue          = residue'
+                    MassTable.AmbiguousResidue = ambiguousResidue'
+                    MassTable.Details          = details'
+                    MassTable.RowVersion       = DateTime.Now
+                }
+
+           static member addName
+                (measure:Measure) (name:string) =
+                measure.Name <- name
+
+           static member addToContext (context:MzIdentMLContext) (item:MassTable) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:MassTable) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type ValueHandler =
+           static member init
+                (
+                    value   : float,
+                    ?id     : int
+                ) =
+                let id'   = defaultArg id 0
+                {
+                    Value.ID          = id'
+                    Value.Value       = value
+                    Value.RowVersion  = DateTime.Now
+                }
+
+           static member addToContext (context:MzIdentMLContext) (item:Value) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Value) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type FragmentArrayHandler =
+           static member init
+                (
+                    measure : Measure,
+                    values  : seq<Value>,
+                    ?id     : int
+                ) =
+                let id'   = defaultArg id 0
+                {
+                    FragmentArray.ID          = id'
+                    FragmentArray.Measure     = measure
+                    FragmentArray.Values      = values |> List
+                    FragmentArray.RowVersion  = DateTime.Now
+                }
+
+           static member addToContext (context:MzIdentMLContext) (item:FragmentArray) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:FragmentArray) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type IndexHandler =
+           static member init
+                (
+                    index : int,
+                    ?id   : int
+                ) =
+                let id'   = defaultArg id 0
+                {
+                    Index.ID          = id'
+                    Index.Index       = index
+                    Index.RowVersion  = DateTime.Now
+                }
+
+           static member addToContext (context:MzIdentMLContext) (item:Index) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Index) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type IonTypeHandler =
+           static member init
+                (
+                    details        : seq<CVParam>,
+                    ?id            : int,
+                    ?index         : seq<Index>,
+                    ?fragmentArray : seq<FragmentArray>
+                ) =
+                let id'            = defaultArg id 0
+                let index'         = convertOptionToList index
+                let fragmentArray' = convertOptionToList fragmentArray
+                {
+                    IonType.ID            = id'
+                    IonType.Index         = index'
+                    IonType.FragmentArray = fragmentArray'
+                    IonType.Details       = details |> List
+                    IonType.RowVersion    = DateTime.Now
+                }
+
+           static member addIndex
+                (ionType:IonType) (index:Index) =
+                let result = ionType.Index <- addToList ionType.Index index
+                ionType
+
+           static member addIndexes
+                (ionType:IonType) (index:seq<Index>) =
+                let result = ionType.Index <- addCollectionToList ionType.Index index
+                ionType
+
+           static member addFragmentArray
+                (ionType:IonType) (fragmentArray:FragmentArray) =
+                let result = ionType.FragmentArray <- addToList ionType.FragmentArray fragmentArray
+                ionType
+
+           static member addFragmentArrays
+                (ionType:IonType) (fragmentArrays:seq<FragmentArray>) =
+                let result = ionType.FragmentArray <- addCollectionToList ionType.FragmentArray fragmentArrays
+                ionType
+
+           static member addToContext (context:MzIdentMLContext) (item:IonType) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:IonType) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type SpectraDataHandler =
+           static member init
+                ( 
+                    location                     : string,
+                    fileFormat                   : CVParam,
+                    spectrumIDFormat             : CVParam,
+                    ?id                          : int,
+                    ?name                        : string,
+                    ?externalFormatDocumentation : string
+                ) =
+                let id'                          = defaultArg id 0
+                let name'                        = defaultArg name null
+                let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
+                {
+                    SpectraData.ID                          = id'
+                    SpectraData.Name                        = name'
+                    SpectraData.Location                    = location
+                    SpectraData.ExternalFormatDocumentation = externalFormatDocumentation'
+                    SpectraData.FileFormat                  = fileFormat
+                    SpectraData.SpectrumIDFormat            = spectrumIDFormat
+                    SpectraData.RowVersion                  = DateTime.Now
+                }
+
+           static member addName
+                (spectraData:SpectraData) (name:string) =
+                spectraData.Name <- name
+
+           static member addExternalFormatDocumentation
+                (spectraData:SpectraData) (externalFormatDocumentation:string) =
+                spectraData.ExternalFormatDocumentation <- externalFormatDocumentation
+
+           static member addToContext (context:MzIdentMLContext) (item:SpectraData) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:SpectraData) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type SpecificityRulesHandler =
+           static member init
+                ( 
+                    details    : seq<CVParam>,
+                    ?id        : int
+                ) =
+                let id'   = defaultArg id 0
+                {
+                    SpecificityRules.ID         = id'
+                    SpecificityRules.Details    = details |> List
+                    SpecificityRules.RowVersion = DateTime.Now
+                }
+           static member addToContext (context:MzIdentMLContext) (item:SpecificityRules) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:SpecificityRules) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type SearchModificationHandler =
+           static member init
+                ( 
+                    fixedMod          : bool,
+                    massDelta         : float,
+                    residues          : string,
+                    details           : List<CVParam>,
+                    ?id               : int,
+                    ?specificityRules : seq<SpecificityRules>
+                ) =
+                let id'               = defaultArg id 0
+                let specificityRules' = convertOptionToList specificityRules
+                {
+                    SearchModification.ID               = id'
+                    SearchModification.FixedMod         = fixedMod
+                    SearchModification.MassDelta        = massDelta
+                    SearchModification.Residues         = residues
+                    SearchModification.SpecificityRules = specificityRules'
+                    SearchModification.Details          = details
+                    SearchModification.RowVersion       = DateTime.Now
+                }
+
+           static member addSpecificityRule
+                (searchModification:SearchModification) (specificityRule:SpecificityRules) =
+                let result = searchModification.SpecificityRules <- addToList searchModification.SpecificityRules specificityRule
+                searchModification
+
+           static member addSpecificityRules
+                (searchModification:SearchModification) (specificityRules:seq<SpecificityRules>) =
+                let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
+                searchModification
+
+           static member addToContext (context:MzIdentMLContext) (item:SearchModification) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:SearchModification) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type EnzymeHandler =
+           static member init
+                (
+                    ?id              : int,
+                    ?name            : string,
+                    ?cTermGain       : string,
+                    ?nTermGain       : string,
+                    ?minDistance     : int,
+                    ?missedCleavages : int,
+                    ?semiSpecific    : bool,
+                    ?siteRegexc      : string,
+                    ?enzymeName      : seq<CVParam>
+                ) =
+                let id'              = defaultArg id 0
+                let name'            = defaultArg name null
+                let cTermGain'       = defaultArg cTermGain null
+                let nTermGain'       = defaultArg nTermGain null
+                let minDistance'     = defaultArg minDistance Unchecked.defaultof<int>
+                let missedCleavages' = defaultArg missedCleavages Unchecked.defaultof<int>
+                let semiSpecific'    = defaultArg semiSpecific Unchecked.defaultof<bool>
+                let siteRegexc'      = defaultArg siteRegexc null
+                let enzymeName'      = convertOptionToList enzymeName
+                {
+                    Enzyme.ID              = id'
+                    Enzyme.Name            = name'
+                    Enzyme.CTermGain       = cTermGain'
+                    Enzyme.NTermGain       = nTermGain'
+                    Enzyme.MinDistance     = minDistance'
+                    Enzyme.MissedCleavages = missedCleavages'
+                    Enzyme.SemiSpecific    = semiSpecific'
+                    Enzyme.SiteRegexc      = siteRegexc'
+                    Enzyme.EnzymeName      = enzymeName'
+                    Enzyme.RowVersion      = DateTime.Now
+                }
+
+           static member addName
+                (enzyme:Enzyme) (name:string) =
+                enzyme.Name <- name
+                enzyme
+
+           static member addCTermGain
+                (enzyme:Enzyme) (cTermGain:string) =
+                enzyme.CTermGain <- cTermGain
+                enzyme
+
+           static member addNTermGain
+                (enzyme:Enzyme) (nTermGain:string) =
+                enzyme.NTermGain <- nTermGain
+                enzyme
+
+           static member addMinDistance
+                (enzyme:Enzyme) (minDistance:int) =
+                enzyme.MinDistance <- minDistance
+                enzyme
+
+           static member addMissedCleavages
+                (enzyme:Enzyme) (missedCleavages:int) =
+                enzyme.MissedCleavages <- missedCleavages
+                enzyme
+
+           static member addSemiSpecific
+                (enzyme:Enzyme) (semiSpecific:bool) =
+                enzyme.SemiSpecific <- semiSpecific
+                enzyme
+
+           static member addSiteRegexc
+                (enzyme:Enzyme) (siteRegexc:string) =
+                enzyme.SiteRegexc <- siteRegexc
+                enzyme
+
+           static member addEnzymeName
+                (enzyme:Enzyme) (enzymeName:CVParam) =
+                let result = enzyme.EnzymeName <- addToList enzyme.EnzymeName enzymeName
+                enzyme
+
+           static member addEnzymeNames
+                (enzyme:Enzyme) (enzymeNames:seq<CVParam>) =
+                let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
+                enzyme
+
+           static member addToContext (context:MzIdentMLContext) (item:Enzyme) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Enzyme) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type FilterHandler =
+           static member init
+                (
+                    filterType : CVParam,
+                    ?id        : int,
+                    ?includes  : seq<CVParam>,
+                    ?excludes  : seq<CVParam>
+                ) =
+                let id'         = defaultArg id 0
+                let includes'   = convertOptionToList includes
+                let excludes'   = convertOptionToList excludes
+                {
+                    Filter.ID         = id'
+                    Filter.FilterType = filterType
+                    Filter.Includes   = includes'
+                    Filter.Excludes   = excludes'
+                    Filter.RowVersion = DateTime.Now
+                }
+
+           static member addInclude
+                (filter:Filter) (include':CVParam) =
+                let result = filter.Includes <- addToList filter.Includes include'
+                filter
+
+           static member addIncludes
+                (filter:Filter) (includes:seq<CVParam>) =
+                let result = filter.Includes <- addCollectionToList filter.Includes includes
+                filter
+
+           static member addExclude
+                (filter:Filter) (exclude':CVParam) =
+                let result = filter.Excludes <- addToList filter.Excludes exclude'
+                filter
+
+           static member addExcludes
+                (filter:Filter) (excludes:seq<CVParam>) =
+                let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
+                filter
+
+           static member addToContext (context:MzIdentMLContext) (item:Filter) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Filter) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type FrameHandler =
+           static member init
+                ( 
+                    frame : string,
+                    ?id   : int
+                ) =
+                let id'   = defaultArg id 0
+                {
+                    Frame.ID         = id'
+                    Frame.Frame      = frame
+                    Frame.RowVersion = DateTime.Now
+                }
+           static member addToContext (context:MzIdentMLContext) (item:Frame) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:Frame) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
+
+    type SpectrumIdentificationProtocolHandler =
+           static member init
+                (
+                    analysisSoftware        : AnalysisSoftware,
+                    searchType              : CVParam ,
+                    threshold               : seq<CVParam>,
+                    ?id                     : int,
+                    ?name                   : string,
+                    ?additionalSearchParams : seq<CVParam>,
+                    ?modificationParams     : seq<SearchModification>,
+                    ?enzymes                : seq<Enzyme>,
+                    ?independent_Enzymes    : bool,
+                    ?massTables             : seq<MassTable>,
+                    ?fragmentTolerance      : seq<CVParam>,
+                    ?parentTolerance        : seq<CVParam>,
+                    ?databaseFilters        : seq<Filter>,
+                    ?frames                 : seq<Frame>,
+                    ?translationTable       : seq<TranslationTable>
+                ) =
+                let id'                     = defaultArg id 0
+                let name'                   = defaultArg name null
+                let additionalSearchParams' = convertOptionToList additionalSearchParams
+                let modificationParams'     = convertOptionToList modificationParams
+                let enzymes'                = convertOptionToList enzymes
+                let independent_Enzymes'    = defaultArg independent_Enzymes Unchecked.defaultof<bool>
+                let massTables'             = convertOptionToList massTables
+                let fragmentTolerance'      = convertOptionToList fragmentTolerance
+                let parentTolerance'        = convertOptionToList parentTolerance
+                let databaseFilters'        = convertOptionToList databaseFilters
+                let frames'                 = convertOptionToList frames
+                let translationTable'       = convertOptionToList translationTable
+                {
+                    SpectrumIdentificationProtocol.ID                     = id'
+                    SpectrumIdentificationProtocol.Name                   = name'
+                    SpectrumIdentificationProtocol.AnalysisSoftware       = analysisSoftware
+                    SpectrumIdentificationProtocol.SearchType             = searchType
+                    SpectrumIdentificationProtocol.AdditionalSearchParams = additionalSearchParams'
+                    SpectrumIdentificationProtocol.ModificationParams     = modificationParams'
+                    SpectrumIdentificationProtocol.Enzymes                = enzymes'
+                    SpectrumIdentificationProtocol.Independent_Enzymes    = independent_Enzymes'
+                    SpectrumIdentificationProtocol.MassTables             = massTables'
+                    SpectrumIdentificationProtocol.FragmentTolerance      = fragmentTolerance'
+                    SpectrumIdentificationProtocol.ParentTolerance        = parentTolerance'
+                    SpectrumIdentificationProtocol.Threshold              = threshold |> List
+                    SpectrumIdentificationProtocol.DatabaseFilters        = databaseFilters'
+                    SpectrumIdentificationProtocol.Frames                 = frames'
+                    SpectrumIdentificationProtocol.TranslationTables      = translationTable'
+                    SpectrumIdentificationProtocol.RowVersion             = DateTime.Now
+                }
+
+           static member addName
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (name:string) =
+                spectrumIdentificationProtocol.Name <- name
+                spectrumIdentificationProtocol
+
+           static member addEnzymeAdditionalSearchParam
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParam:CVParam) =
+                let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParam
+                spectrumIdentificationProtocol
+
+           static member addEnzymeAdditionalSearchParams
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParams:seq<CVParam>) =
+                let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addCollectionToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParams
+                spectrumIdentificationProtocol
+
+           static member addModificationParam
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (modificationParam:SearchModification) =
+                let result = spectrumIdentificationProtocol.ModificationParams <- addToList spectrumIdentificationProtocol.ModificationParams modificationParam
+                spectrumIdentificationProtocol
+
+           static member addModificationParams
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (modificationParams:seq<SearchModification>) =
+                let result = spectrumIdentificationProtocol.ModificationParams <- addCollectionToList spectrumIdentificationProtocol.ModificationParams modificationParams
+                spectrumIdentificationProtocol
+
+           static member addEnzyme
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (enzyme:Enzyme) =
+                let result = spectrumIdentificationProtocol.Enzymes <- addToList spectrumIdentificationProtocol.Enzymes enzyme
+                spectrumIdentificationProtocol
+
+           static member addEnzymes
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (enzymes:seq<Enzyme>) =
+                let result = spectrumIdentificationProtocol.Enzymes <- addCollectionToList spectrumIdentificationProtocol.Enzymes enzymes
+                spectrumIdentificationProtocol
+
+           static member addIndependent_Enzymes
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (independent_Enzymes:bool) =
+                spectrumIdentificationProtocol.Independent_Enzymes <- independent_Enzymes
+                spectrumIdentificationProtocol
+
+           static member addMassTable
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (massTable:MassTable) =
+                let result = spectrumIdentificationProtocol.MassTables <- addToList spectrumIdentificationProtocol.MassTables massTable
+                spectrumIdentificationProtocol
+
+           static member addMassTables
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (massTables:seq<MassTable>) =
+                let result = spectrumIdentificationProtocol.MassTables <- addCollectionToList spectrumIdentificationProtocol.MassTables massTables
+                spectrumIdentificationProtocol
+
+           static member addFragmentTolerance
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerance:CVParam) =
+                let result = spectrumIdentificationProtocol.FragmentTolerance <- addToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerance
+                spectrumIdentificationProtocol
+
+           static member addFragmentTolerances
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerances:seq<CVParam>) =
+                let result = spectrumIdentificationProtocol.FragmentTolerance <- addCollectionToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerances
+                spectrumIdentificationProtocol
+
+           static member addParentTolerance
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerance:CVParam) =
+                let result = spectrumIdentificationProtocol.ParentTolerance <- addToList spectrumIdentificationProtocol.ParentTolerance parentTolerance
+                spectrumIdentificationProtocol
+
+           static member addParentTolerances
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerances:seq<CVParam>) =
+                let result = spectrumIdentificationProtocol.ParentTolerance <- addCollectionToList spectrumIdentificationProtocol.ParentTolerance parentTolerances
+                spectrumIdentificationProtocol
+
+           static member addDatabaseFilter
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (databaseFilter:Filter) =
+                let result = spectrumIdentificationProtocol.DatabaseFilters <- addToList spectrumIdentificationProtocol.DatabaseFilters databaseFilter
+                spectrumIdentificationProtocol
+
+           static member addDatabaseFilters
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (databaseFilters:seq<Filter>) =
+                let result = spectrumIdentificationProtocol.DatabaseFilters <- addCollectionToList spectrumIdentificationProtocol.DatabaseFilters databaseFilters
+                spectrumIdentificationProtocol
+
+           static member addFrame
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (frame:Frame) =
+                let result = spectrumIdentificationProtocol.Frames <- addToList spectrumIdentificationProtocol.Frames frame
+                spectrumIdentificationProtocol
+
+           static member addFrames
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (frames:seq<Frame>) =
+                let result = spectrumIdentificationProtocol.Frames <- addCollectionToList spectrumIdentificationProtocol.Frames frames
+                spectrumIdentificationProtocol
+
+           static member addTranslationTable
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (translationTable:TranslationTable) =
+                let result = spectrumIdentificationProtocol.TranslationTables <- addToList spectrumIdentificationProtocol.TranslationTables translationTable
+                spectrumIdentificationProtocol
+
+           static member addTranslationTables
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (translationTables:seq<TranslationTable>) =
+                let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
+                spectrumIdentificationProtocol
+
+           static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationProtocol) =
+                (addToContextWithExceptionCheck context item)
+
+           static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationProtocol) =
+                (addToContextWithExceptionCheck context item) |> ignore
+                insertWithExceptionCheck context
 
     type SearchDatabaseHandler =
            static member init
@@ -795,6 +1424,199 @@ module ObjectHandlers =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
+
+    type PeptideEvidenceHandler =
+           static member init
+                (
+                    dbSequence        : DBSequence,
+                    peptide           : Peptide,
+                    ?id               : int,
+                    ?name             : string,
+                    ?start            : int,
+                    ?end'             : int,
+                    ?pre              : string,
+                    ?post             : string,
+                    ?frame            : Frame,
+                    ?isDecoy          : bool,
+                    ?translationTable : TranslationTable,
+                    ?details          : seq<CVParam>           
+                ) =
+                let id'               = defaultArg id 0
+                let name'             = defaultArg name null
+                let start'            = defaultArg start Unchecked.defaultof<int>
+                let end''             = defaultArg end' Unchecked.defaultof<int>
+                let pre'              = defaultArg pre null
+                let post'             = defaultArg post null
+                let frame'            = defaultArg frame Unchecked.defaultof<Frame>
+                let isDecoy'          = defaultArg isDecoy Unchecked.defaultof<bool>
+                let translationTable' = defaultArg translationTable Unchecked.defaultof<TranslationTable>
+                let details'          = convertOptionToList details
+                {
+                    PeptideEvidence.ID               = id'
+                    PeptideEvidence.Name             = name'
+                    PeptideEvidence.DBSequence       = dbSequence
+                    PeptideEvidence.Peptide          = peptide
+                    PeptideEvidence.Start            = start'
+                    PeptideEvidence.End              = end''
+                    PeptideEvidence.Pre              = pre'
+                    PeptideEvidence.Post             = post'
+                    PeptideEvidence.Frame            = frame'
+                    PeptideEvidence.IsDecoy          = isDecoy'
+                    PeptideEvidence.TranslationTable = translationTable'
+                    PeptideEvidence.Details          = details'
+                    PeptideEvidence.RowVersion       = DateTime.Now
+                }
+
+           static member addName
+                (peptideEvidence:PeptideEvidence) (name:string) =
+                peptideEvidence.Name <- name
+
+           static member addStart
+                (peptideEvidence:PeptideEvidence) (start:int) =
+                peptideEvidence.Start <- start
+
+           static member addEnd 
+                (peptideEvidence:PeptideEvidence) (end':int) =
+                peptideEvidence.End  <- end'
+
+           static member addPre
+                (peptideEvidence:PeptideEvidence) (pre:string) =
+                peptideEvidence.Pre <- pre
+
+           static member addPost
+                (peptideEvidence:PeptideEvidence) (post:string) =
+                peptideEvidence.Post <- post
+
+           static member addFrame
+                (peptideEvidence:PeptideEvidence) (frame:Frame) =
+                peptideEvidence.Frame <- frame
+
+           static member addIsDecoy
+                (peptideEvidence:PeptideEvidence) (isDecoy:bool) =
+                peptideEvidence.IsDecoy <- isDecoy
+
+           static member addTranslationTable
+                (peptideEvidence:PeptideEvidence) (translationTable:TranslationTable) =
+                peptideEvidence.TranslationTable <- translationTable
+            
+           static member addDetail
+                (peptideEvidence:PeptideEvidence) (detail:CVParam) =
+                let result = peptideEvidence.Details <- addToList peptideEvidence.Details detail
+                peptideEvidence
+
+           static member addDetails
+                (peptideEvidence:PeptideEvidence) (details:seq<CVParam>) =
+                let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
+                peptideEvidence
+
+            static member addToContext (context:MzIdentMLContext) (item:PeptideEvidence) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:PeptideEvidence) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type SpectrumIdentificationItemHandler =
+           static member init
+                (
+                    peptide                  : Peptide,
+                    chargeState              : int,
+                    experimentalMassToCharge : float,
+                    passThreshold            : bool,
+                    rank                     : int,
+                    ?id                      : int,
+                    ?name                    : string,
+                    ?sample                  : Sample,
+                    ?massTable               : MassTable,
+                    ?peptideEvidences        : seq<PeptideEvidence>,
+                    ?fragmentations          : seq<IonType>,
+                    ?calculatedMassToCharge  : float,
+                    ?calculatedPI            : float,
+                    ?details                 : seq<CVParam>
+                ) =
+                let id'                     = defaultArg id 0
+                let name'                   = defaultArg name null
+                let sample'                 = defaultArg sample Unchecked.defaultof<Sample>
+                let massTable'              = defaultArg massTable Unchecked.defaultof<MassTable>
+                let peptideEvidences'       = convertOptionToList peptideEvidences
+                let fragmentations'         = convertOptionToList fragmentations
+                let calculatedMassToCharge' = defaultArg calculatedMassToCharge Unchecked.defaultof<float>
+                let calculatedPI'           = defaultArg calculatedPI Unchecked.defaultof<float>
+                let details'                = convertOptionToList details
+                {
+                    SpectrumIdentificationItem.ID                       = id'
+                    SpectrumIdentificationItem.Name                     = name'
+                    SpectrumIdentificationItem.Sample                   = sample'
+                    SpectrumIdentificationItem.MassTable                = massTable'
+                    SpectrumIdentificationItem.PassThreshold            = passThreshold
+                    SpectrumIdentificationItem.Rank                     = rank
+                    SpectrumIdentificationItem.PeptideEvidences         = peptideEvidences'
+                    SpectrumIdentificationItem.Fragmentations           = fragmentations'
+                    SpectrumIdentificationItem.Peptide                  = peptide
+                    SpectrumIdentificationItem.ChargeState              = chargeState
+                    SpectrumIdentificationItem.ExperimentalMassToCharge = experimentalMassToCharge
+                    SpectrumIdentificationItem.CalculatedMassToCharge   = calculatedMassToCharge'
+                    SpectrumIdentificationItem.CalculatedPI             = calculatedPI'
+                    SpectrumIdentificationItem.Details                  = details'
+                    SpectrumIdentificationItem.RowVersion               = DateTime.Now
+                }
+
+           static member addName
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (name:string) =
+                spectrumIdentificationItem.Name <- name
+
+           static member addSample
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (sample:Sample) =
+                spectrumIdentificationItem.Sample <- sample 
+
+           static member addMassTable
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (massTable:MassTable) =
+                spectrumIdentificationItem.MassTable <- massTable
+   
+           static member addPeptideEvidence
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (peptideEvidence:PeptideEvidence) =
+                let result = spectrumIdentificationItem.PeptideEvidences <- addToList spectrumIdentificationItem.PeptideEvidences peptideEvidence
+                spectrumIdentificationItem
+
+           static member addPeptideEvidences
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (peptideEvidences:seq<PeptideEvidence>) =
+                let result = spectrumIdentificationItem.PeptideEvidences <- addCollectionToList spectrumIdentificationItem.PeptideEvidences peptideEvidences
+                spectrumIdentificationItem   
+
+           static member addFragmentation
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (ionType:IonType) =
+                let result = spectrumIdentificationItem.Fragmentations <- addToList spectrumIdentificationItem.Fragmentations ionType
+                spectrumIdentificationItem
+
+           static member addFragmentations
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (ionTypes:seq<IonType>) =
+                let result = spectrumIdentificationItem.Fragmentations <- addCollectionToList spectrumIdentificationItem.Fragmentations ionTypes
+                spectrumIdentificationItem 
+
+           static member addCalculatedMassToCharge
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (calculatedMassToCharge:float) =
+                spectrumIdentificationItem.CalculatedMassToCharge <- calculatedMassToCharge
+
+           static member addCalculatedPI
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (calculatedPI:float) =
+                spectrumIdentificationItem.CalculatedPI <- calculatedPI
+
+           static member addDetail
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (detail:CVParam) =
+                let result = spectrumIdentificationItem.Details <- addToList spectrumIdentificationItem.Details detail
+                spectrumIdentificationItem
+
+           static member addDetails
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (details:seq<CVParam>) =
+                let result = spectrumIdentificationItem.Details <- addCollectionToList spectrumIdentificationItem.Details details
+                spectrumIdentificationItem
+
+            static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationItem) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationItem) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
 
 module test =
 //Apply functions
