@@ -67,7 +67,9 @@ module DataContext =
               ID              : int
               mutable Name    : string
               mutable Details : List<CVParam>
+              //Formerly Parent/Organization_Ref
               mutable Parent  : string
+              //
               RowVersion      : DateTime
              }
 
@@ -81,7 +83,9 @@ module DataContext =
               mutable FirstName      : string
               mutable MidInitials    : string
               mutable LastName       : string
+              //Formerly Organization_Ref
               mutable Organizations  : List<Organization>
+              //
               mutable Details        : List<CVParam>
               RowVersion             : DateTime
               //CVParams_Organization   : List<CVParam>
@@ -94,7 +98,9 @@ module DataContext =
             {
              [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
              ID         : int
+             //Formerly Contact_Ref
              Person     : Person
+             //
              Role       : CVParam
              RowVersion : DateTime 
             }
@@ -120,7 +126,9 @@ module DataContext =
              {
               [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
               ID                  : int
+              //Formerly Sample_Ref
               mutable SubSampleID : string
+              //
               RowVersion          : DateTime
              }
 
@@ -364,19 +372,25 @@ module DataContext =
               [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
               ID                             : int
               mutable Name                   : string
+              //Formerly AnalysisSoftware_Ref
               AnalysisSoftware               : AnalysisSoftware
+              //
               SearchType                     : CVParam
               mutable AdditionalSearchParams : List<CVParam>
               mutable ModificationParams     : List<SearchModification>
+              //Formerly Enzymes
               mutable Enzymes                : List<Enzyme>
               mutable Independent_Enzymes    : bool
+              //
               mutable MassTables             : List<MassTable>
               mutable FragmentTolerance      : List<CVParam>
               mutable ParentTolerance        : List<CVParam>
               Threshold                      : List<CVParam>
               mutable DatabaseFilters        : List<Filter>
+              //DatabaseTranlation
               mutable Frames                 : List<Frame>
               mutable TranslationTables      : List<TranslationTable>
+              //
               RowVersion                     : DateTime
              }
 
@@ -422,15 +436,21 @@ module DataContext =
               [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
               ID                       : int
               mutable Name             : string
+              //Formerly DBSequence_Ref
               DBSequence               : DBSequence
+              //
+              //Formerly Peptide_Ref
               Peptide                  : Peptide
+              //
               mutable Start            : int
               mutable End              : int
               mutable Pre              : string
               mutable Post             : string
               mutable Frame            : Frame
               mutable IsDecoy          : bool
+              //Formerly TranslationTable_Ref
               mutable TranslationTable : TranslationTable
+              //
               mutable Details          : List<CVParam>
               RowVersion               : DateTime
              }
@@ -496,8 +516,12 @@ module DataContext =
               mutable ActivityDate           : DateTime
               SpectrumIdentificationList     : SpectrumIdentificationList
               SpectrumIdentificationProtocol : SpectrumIdentificationProtocol
+              //SpectraData_Ref
               SpectraData                    : List<SpectraData>
+              //
+              //SearchDatabase_Ref
               SearchDatabase                 : List<SearchDatabase>
+              //
               RowVersion                     : DateTime
              }
 
@@ -643,6 +667,7 @@ module DataContext =
               mutable Name             : string
               //Formerly AnalysisSoftware_Ref
               mutable AnalysisSoftware : AnalysisSoftware
+              //
               mutable ContactRole      : ContactRole
               RowVersion               : DateTime
              }
