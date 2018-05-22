@@ -8,10 +8,21 @@
     <Compile Include="MzIdentML-DataContext.fs" />
     <Compile Include="MzIdentML-DataContext_EasyVersion.fs" />
     <Compile Include="InsertStatements_EasyVersion.fs" />
+    <Compile Include="XML_Insertstatement.fs" />
     <Compile Include="InsertStatements.fs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Ontologies\Pride.txt" />
+    <Content Include="Ontologies\Psi-MS.txt" />
+    <Content Include="Ontologies\Unimod.txt" />
+    <Content Include="Ontologies\Unit_Ontology.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BioFSharp">
+      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.dll</HintPath>
+    </Reference>
     <Reference Include="BioFSharp.IO">
       <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.IO.dll</HintPath>
     </Reference>
