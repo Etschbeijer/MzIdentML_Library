@@ -381,9 +381,9 @@ module InsertStatements =
                     analysisSoftware.Customizations <- customizations
                     analysisSoftware
 
-               static member addCustomizations
-                    (analysisSoftware:AnalysisSoftware) (contactRole:ContactRole) =
-                    analysisSoftware.ContactRole <- contactRole
+               static member addAnalysisSoftwareDeveloper
+                    (analysisSoftware:AnalysisSoftware) (analysisSoftwareDeveloper:ContactRole) =
+                    analysisSoftware.ContactRole <- analysisSoftwareDeveloper
                     analysisSoftware
 
                 static member addToContext (context:MzIdentMLContext) (item:AnalysisSoftware) =
@@ -2424,8 +2424,11 @@ module InsertStatements =
         let cvParam = CVParamHandler.init("Test", termIII)
         let addCVtoContext = CVParamHandler.addToContext context cvParam
 
-        let analysisSoftware = AnalysisSoftwareHandler.init(cvParam,0)
-        let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BoB"
+        let analysisSoftware = AnalysisSoftwareHandler.init(cvParam, 0)
+        let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BioFsharp.MZ"
+        let analysisSoftwareURI = AnalysisSoftwareHandler.addURI analysisSoftwareName "www.TEST.de"
+        let analysisSoftwareVersion = AnalysisSoftwareHandler.addVersion analysisSoftwareURI "V 1.00"
+        let analyisisSofwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper analysisSoftwareVersion (ContactRoleHandler.init(PersonHandler.init(0, "David"),(CVParamHandler.init("Testi",termI))))
         let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analysisSoftwareName
 
         let person = PersonHandler.init(0)
