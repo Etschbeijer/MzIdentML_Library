@@ -17,6 +17,10 @@
     <Content Include="Ontologies\Psi-MS.txt" />
     <Content Include="Ontologies\Unimod.txt" />
     <Content Include="Ontologies\Unit_Ontology.txt" />
+    <Content Include="XML_Files\MzIdentMLScheme - Copy.txt" />
+    <Content Include="XML_Files\MzIdentMLScheme1_2.txt" />
+    <Content Include="XML_Files\PeptideShaker_mzid_1_2_example.txt" />
+    <Content Include="XML_Files\PeptideShaker_Scheme.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,6 +75,31 @@
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\System.Data.SQLite.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="FilesForBuilding\cs\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\de\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\en\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\es\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\fr\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\it\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\ja\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\ko\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\pl\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\pt-BR\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\ru\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\tr\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\x64\e_sqlite3.dll" />
+    <None Include="FilesForBuilding\x64\SQLite.Interop.dll" />
+    <None Include="FilesForBuilding\x86\e_sqlite3.dll" />
+    <None Include="FilesForBuilding\x86\SQLite.Interop.dll" />
+    <None Include="FilesForBuilding\zh-Hans\FSharp.Core.resources.dll" />
+    <None Include="FilesForBuilding\zh-Hant\FSharp.Core.resources.dll" />
+    <None Include="XML_Files\MzIdentMLScheme.xsd" />
+    <None Include="XML_Files\MzIdentMLScheme1_2.xsd" />
+    <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid" />
+    <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid.gz" />
   </ItemGroup>
 
 </Project>
