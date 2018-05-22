@@ -2407,12 +2407,25 @@ module InsertStatements =
 
     module test =
     //Apply functions
+        
+        #r "System.ComponentModel.DataAnnotations.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\netstandard.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Sqlite.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\SQLitePCLRaw.batteries_v2.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\MzIdentML_Library.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
+
 
         open ObjectHandlers
         open ManipulateDataContextAndDB
 
 
-        let context = configureSQLiteContextMzIdentML standardDBPathSQLite
+        let context = configureSQLiteContextMzIdentML "C:\Users\PatrickB\Source\Repos\Test.db"
 
         //Term and Ontology
         let termI = TermHandler.init("I")
@@ -2429,7 +2442,7 @@ module InsertStatements =
         let analysisSoftwareURI = AnalysisSoftwareHandler.addURI analysisSoftwareName "www.TEST.de"
         let analysisSoftwareVersion = AnalysisSoftwareHandler.addVersion analysisSoftwareURI "V 1.00"
         let analyisisSofwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper analysisSoftwareVersion (ContactRoleHandler.init(PersonHandler.init(0, "David"),(CVParamHandler.init("Testi",termI))))
-        let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analysisSoftwareName
+        let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analyisisSofwareDeveloper
 
         let person = PersonHandler.init(0)
         let addpersonToContext = PersonHandler.addToContext context person
