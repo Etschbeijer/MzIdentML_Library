@@ -1618,6 +1618,796 @@ module ObjectHandlers =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
+    type SpectrumIdentificationResultHandler =
+           static member init
+                (
+                    spectraData                : SpectraData,
+                    spectrumID                 : string,
+                    spectrumIdentificationItem : seq<SpectrumIdentificationItem>,
+                    ?id                        : int,
+                    ?name                      : string,
+                    ?details                   : seq<CVParam>              
+                ) =
+                let id'       = defaultArg id 0
+                let name'     = defaultArg name null
+                let details'  = convertOptionToList details
+                {
+                    SpectrumIdentificationResult.ID                         = id'
+                    SpectrumIdentificationResult.Name                       = name'
+                    SpectrumIdentificationResult.SpectraData                = spectraData
+                    SpectrumIdentificationResult.SpectrumID                 = spectrumID
+                    SpectrumIdentificationResult.SpectrumIdentificationItem = spectrumIdentificationItem |> List
+                    SpectrumIdentificationResult.Details                    = details'
+                    SpectrumIdentificationResult.RowVersion                 = DateTime.Now
+                }
+
+           static member addName
+                (spectrumIdentificationResult:SpectrumIdentificationResult) (name:string) =
+                spectrumIdentificationResult.Name <- name
+
+           static member addDetail
+                (spectrumIdentificationResult:SpectrumIdentificationResult) (detail:CVParam) =
+                let result = spectrumIdentificationResult.Details <- addToList spectrumIdentificationResult.Details detail
+                spectrumIdentificationResult
+
+           static member addDetails
+                (spectrumIdentificationResult:DBSequence) (details:seq<CVParam>) =
+                let result = spectrumIdentificationResult.Details <- addCollectionToList spectrumIdentificationResult.Details details
+                spectrumIdentificationResult
+
+            static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationResult) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationResult) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type SpectrumIdentificationListHandler =
+           static member init
+                (
+                    spectrumIdentificationResult : seq<SpectrumIdentificationResult>,
+                    ?id                          : int,
+                    ?name                        : string,
+                    ?numSequencesSearched        : int,
+                    ?fragmentationTable          : seq<Measure>,
+                    ?details                     : seq<CVParam>          
+                ) =
+                let id'                   = defaultArg id 0
+                let name'                 = defaultArg name null
+                let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int>
+                let fragmentationTable'   = convertOptionToList fragmentationTable
+                let details'              = convertOptionToList details
+                {
+                    SpectrumIdentificationList.ID                           = id'
+                    SpectrumIdentificationList.Name                         = name'
+                    SpectrumIdentificationList.NumSequencesSearched         = numSequencesSearched'
+                    SpectrumIdentificationList.FragmentationTables          = fragmentationTable'
+                    SpectrumIdentificationList.SpectrumIdentificationResult = spectrumIdentificationResult |> List
+                    SpectrumIdentificationList.Details                      = details'
+                    SpectrumIdentificationList.RowVersion                   = DateTime.Now
+                }
+
+           static member addName
+                (spectrumIdentificationList:SpectrumIdentificationList) (name:string) =
+                spectrumIdentificationList.Name <- name
+
+           static member addNumSequencesSearched
+                (spectrumIdentificationList:SpectrumIdentificationList) (numSequencesSearched:int) =
+                spectrumIdentificationList.NumSequencesSearched <- numSequencesSearched
+
+           static member addFragmentationTable
+                (spectrumIdentificationList:SpectrumIdentificationList) (fragmentationTable:Measure) =
+                let result = spectrumIdentificationList.FragmentationTables <- addToList spectrumIdentificationList.FragmentationTables fragmentationTable
+                spectrumIdentificationList
+
+           static member addFragmentationTables
+                (spectrumIdentificationList:SpectrumIdentificationList) (fragmentationTables:seq<Measure>) =
+                let result = spectrumIdentificationList.FragmentationTables <- addCollectionToList spectrumIdentificationList.FragmentationTables fragmentationTables
+                spectrumIdentificationList
+
+           static member addDetail
+                (spectrumIdentificationList:SpectrumIdentificationList) (detail:CVParam) =
+                let result = spectrumIdentificationList.Details <- addToList spectrumIdentificationList.Details detail
+                spectrumIdentificationList
+
+           static member addDetails
+                (spectrumIdentificationList:SpectrumIdentificationList) (details:seq<CVParam>) =
+                let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
+                spectrumIdentificationList
+
+            static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationList) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationList) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type SpectrumIdentificationHandler =
+           static member init
+                (
+                    spectrumIdentificationList     : SpectrumIdentificationList,
+                    spectrumIdentificationProtocol : SpectrumIdentificationProtocol,
+                    spectraData                    : seq<SpectraData>,
+                    searchDatabase                 : seq<SearchDatabase>,
+                    ?id                            : int,
+                    ?name                          : string,
+                    ?activityDate                  : DateTime
+                ) =
+                let id'           = defaultArg id 0
+                let name'         = defaultArg name null
+                let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
+                {
+                    SpectrumIdentification.ID                             = id'
+                    SpectrumIdentification.Name                           = name'
+                    SpectrumIdentification.ActivityDate                   = activityDate'
+                    SpectrumIdentification.SpectrumIdentificationList     = spectrumIdentificationList
+                    SpectrumIdentification.SpectrumIdentificationProtocol = spectrumIdentificationProtocol
+                    SpectrumIdentification.SpectraData                    = spectraData |> List
+                    SpectrumIdentification.SearchDatabase                 = searchDatabase |> List
+                    SpectrumIdentification.RowVersion                     = DateTime.Now
+                }
+
+           static member addName
+                (spectrumIdentificationList:SpectrumIdentification) (name:string) =
+                spectrumIdentificationList.Name <- name
+
+           static member addNumSequencesSearched
+                (spectrumIdentificationList:SpectrumIdentification) (activityDate:DateTime) =
+                spectrumIdentificationList.ActivityDate <- activityDate
+
+           static member addDetail
+                (spectrumIdentificationList:SpectrumIdentificationList) (detail:CVParam) =
+                let result = spectrumIdentificationList.Details <- addToList spectrumIdentificationList.Details detail
+                spectrumIdentificationList
+
+           static member addDetails
+                (spectrumIdentificationList:SpectrumIdentificationList) (details:seq<CVParam>) =
+                let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
+                spectrumIdentificationList
+
+            static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentification) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:SpectrumIdentification) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type ProteinDetectionProtocolHandler =
+           static member init
+                (
+                    analysisSoftware : AnalysisSoftware,
+                    threshold        : seq<CVParam>,
+                    ?id              : int,
+                    ?name            : string,
+                    ?analysisParams  : seq<CVParam>
+                ) =
+                let id'             = defaultArg id 0
+                let name'           = defaultArg name null
+                let analysisParams' = convertOptionToList analysisParams
+                {
+                    ProteinDetectionProtocol.ID               = id'
+                    ProteinDetectionProtocol.Name             = name'
+                    ProteinDetectionProtocol.AnalysisSoftware = analysisSoftware
+                    ProteinDetectionProtocol.AnalysisParams   = analysisParams'
+                    ProteinDetectionProtocol.Threshold        = threshold |> List
+                    ProteinDetectionProtocol.RowVersion       = DateTime.Now
+                }
+
+           static member addName
+                (proteinDetectionProtocol:ProteinDetectionProtocol) (name:string) =
+                proteinDetectionProtocol.Name <- name
+
+           static member addAnalysisParam
+                (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParam:CVParam) =
+                let result = proteinDetectionProtocol.AnalysisParams <- addToList proteinDetectionProtocol.AnalysisParams analysisParam
+                proteinDetectionProtocol
+
+           static member addAnalysisParams
+                (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParams:seq<CVParam>) =
+                let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
+                proteinDetectionProtocol
+
+            static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionProtocol) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:ProteinDetectionProtocol) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type SourceFileHandler =
+           static member init
+                (             
+                    location                     : string,
+                    fileFormat                   : CVParam,
+                    ?id                          : int,
+                    ?name                        : string,
+                    ?externalFormatDocumentation : string,
+                    ?details                     : seq<CVParam>
+                ) =
+                let id'                          = defaultArg id 0
+                let name'                        = defaultArg name null
+                let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
+                let details'                     = convertOptionToList details
+                {
+                    SourceFile.ID                          = id'
+                    SourceFile.Name                        = name'
+                    SourceFile.Location                    = location
+                    SourceFile.ExternalFormatDocumentation = externalFormatDocumentation'
+                    SourceFile.FileFormat                  = fileFormat
+                    SourceFile.Details                     = details'
+                    SourceFile.RowVersion                  = DateTime.Now
+                }
+
+           static member addName
+                (sourceFile:SourceFile) (name:string) =
+                sourceFile.Name <- name
+
+           static member addExternalFormatDocumentation
+                (sourceFile:SourceFile) (externalFormatDocumentation:string) =
+                sourceFile.ExternalFormatDocumentation <- externalFormatDocumentation
+
+           static member addDetail
+                (sourceFile:SourceFile) (detail:CVParam) =
+                let result = sourceFile.Details <- addToList sourceFile.Details detail
+                sourceFile
+
+           static member addDetails
+                (sourceFile:SourceFile) (details:seq<CVParam>) =
+                let result = sourceFile.Details <- addCollectionToList sourceFile.Details details
+                sourceFile
+
+            static member addToContext (context:MzIdentMLContext) (item:SourceFile) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:SourceFile) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type InputsHandler =
+           static member init
+                (              
+                    spectraData     : seq<SpectraData>,
+                    ?id             : int,
+                    ?sourceFile     : seq<SourceFile>,
+                    ?searchDatabase : seq<SearchDatabase>
+                ) =
+                let id'             = defaultArg id 0
+                let sourceFile'     = convertOptionToList sourceFile
+                let searchDatabase' = convertOptionToList searchDatabase
+                {
+                    Inputs.ID              = id'
+                    Inputs.SourceFiles     = sourceFile'
+                    Inputs.SearchDatabases = searchDatabase'
+                    Inputs.SpectraData     = spectraData |> List
+                    Inputs.RowVersion      = DateTime.Now
+                }
+
+           static member addSourceFile
+                (inputs:Inputs) (sourceFile:SourceFile) =
+                let result = inputs.SourceFiles <- addToList inputs.SourceFiles sourceFile
+                inputs
+
+           static member addSourceFiles
+                (inputs:Inputs) (sourceFiles:seq<SourceFile>) =
+                let result = inputs.SourceFiles <- addCollectionToList inputs.SourceFiles sourceFiles
+                inputs
+
+           static member addSearchDatabase
+                (inputs:Inputs) (searchDatabase:SearchDatabase) =
+                let result = inputs.SearchDatabases <- addToList inputs.SearchDatabases searchDatabase
+                inputs
+
+           static member addSearchDatabases
+                (inputs:Inputs) (searchDatabases:seq<SearchDatabase>) =
+                let result = inputs.SearchDatabases <- addCollectionToList inputs.SearchDatabases searchDatabases
+                inputs
+
+            static member addToContext (context:MzIdentMLContext) (item:Inputs) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:Inputs) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type PeptideHypothesisHandler =
+           static member init
+                (              
+                    peptideEvidence             : PeptideEvidence,
+                    spectrumIdentificationItems : seq<SpectrumIdentificationItem>,
+                    ?id                         : int
+                ) =
+                let id' = defaultArg id 0
+                {
+                    PeptideHypothesis.ID                          = id'
+                    PeptideHypothesis.PeptideEvidence             = peptideEvidence
+                    PeptideHypothesis.SpectrumIdentificationItems = spectrumIdentificationItems |> List
+                    PeptideHypothesis.RowVersion                  = DateTime.Now
+                }
+
+            static member addToContext (context:MzIdentMLContext) (item:PeptideHypothesis) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:PeptideHypothesis) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type ProteinDetectionHypothesisHandler =
+           static member init
+                (             
+                    passThreshold     : bool,
+                    dbSequence        : DBSequence,
+                    peptideHypothesis : seq<PeptideHypothesis>,
+                    ?id               : int,
+                    ?name             : string,
+                    ?details          : seq<CVParam>
+                ) =
+                let id'      = defaultArg id 0
+                let name'    = defaultArg name null
+                let details' = convertOptionToList details
+                {
+                    ProteinDetectionHypothesis.ID                = id'
+                    ProteinDetectionHypothesis.Name              = name'
+                    ProteinDetectionHypothesis.PassThreshold     = passThreshold
+                    ProteinDetectionHypothesis.DBSequence        = dbSequence
+                    ProteinDetectionHypothesis.PeptideHypothesis = peptideHypothesis |> List
+                    ProteinDetectionHypothesis.Details           = details'
+                    ProteinDetectionHypothesis.RowVersion        = DateTime.Now
+                }
+
+           static member addName
+                (proteinDetectionHypothesis:ProteinDetectionHypothesis) (name:string) =
+                proteinDetectionHypothesis.Name <- name
+
+           static member addDetail
+                (proteinDetectionHypothesis:ProteinDetectionHypothesis) (detail:CVParam) =
+                let result = proteinDetectionHypothesis.Details <- addToList proteinDetectionHypothesis.Details detail
+                proteinDetectionHypothesis
+
+           static member addDetails
+                (proteinDetectionHypothesis:ProteinDetectionHypothesis) (details:seq<CVParam>) =
+                let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
+                proteinDetectionHypothesis
+
+            static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionHypothesis) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:ProteinDetectionHypothesis) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type ProteinAmbiguityGroupHandler =
+           static member init
+                (             
+                    proteinDetecionHypothesis : seq<ProteinDetectionHypothesis>,
+                    ?id                       : int,
+                    ?name                     : string,
+                    ?details                  : seq<CVParam>
+                ) =
+                let id'                          = defaultArg id 0
+                let name'                        = defaultArg name null
+                let details'                     = convertOptionToList details
+                {
+                    ProteinAmbiguityGroup.ID                        = id'
+                    ProteinAmbiguityGroup.Name                      = name'
+                    ProteinAmbiguityGroup.ProteinDetecionHypothesis = proteinDetecionHypothesis |> List
+                    ProteinAmbiguityGroup.Details                   = details'
+                    ProteinAmbiguityGroup.RowVersion                = DateTime.Now
+                }
+
+           static member addName
+                (proteinAmbiguityGroup:ProteinAmbiguityGroup) (name:string) =
+                proteinAmbiguityGroup.Name <- name
+
+           static member addDetail
+                (proteinAmbiguityGroup:ProteinAmbiguityGroup) (detail:CVParam) =
+                let result = proteinAmbiguityGroup.Details <- addToList proteinAmbiguityGroup.Details detail
+                proteinAmbiguityGroup
+
+           static member addDetails
+                (proteinAmbiguityGroup:ProteinAmbiguityGroup) (details:seq<CVParam>) =
+                let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
+                proteinAmbiguityGroup
+
+            static member addToContext (context:MzIdentMLContext) (item:ProteinAmbiguityGroup) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:ProteinAmbiguityGroup) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type ProteinDetectionListHandler =
+           static member init
+                (             
+                    ?id                     : int,
+                    ?name                   : string,
+                    ?proteinAmbiguityGroups : seq<ProteinAmbiguityGroup>,
+                    ?details                : seq<CVParam>
+                ) =
+                let id'                     = defaultArg id 0
+                let name'                   = defaultArg name null
+                let proteinAmbiguityGroups' = convertOptionToList proteinAmbiguityGroups
+                let details'                = convertOptionToList details
+                {
+                    ProteinDetectionList.ID                     = id'
+                    ProteinDetectionList.Name                   = name'
+                    ProteinDetectionList.ProteinAmbiguityGroups = proteinAmbiguityGroups'
+                    ProteinDetectionList.Details                = details'
+                    ProteinDetectionList.RowVersion             = DateTime.Now
+                }
+
+           static member addName
+                (proteinDetectionList:ProteinDetectionList) (name:string) =
+                proteinDetectionList.Name <- name
+
+           static member addProteinAmbiguityGroup
+                (proteinDetectionList:ProteinDetectionList) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
+                let result = proteinDetectionList.ProteinAmbiguityGroups <- addToList proteinDetectionList.ProteinAmbiguityGroups proteinAmbiguityGroup
+                proteinDetectionList
+
+           static member addProteinAmbiguityGroups
+                (proteinDetectionList:ProteinDetectionList) (proteinAmbiguityGroups:seq<ProteinAmbiguityGroup>) =
+                let result = proteinDetectionList.ProteinAmbiguityGroups <- addCollectionToList proteinDetectionList.ProteinAmbiguityGroups proteinAmbiguityGroups
+                proteinDetectionList
+
+           static member addDetail
+                (proteinDetectionList:ProteinDetectionList) (detail:CVParam) =
+                let result = proteinDetectionList.Details <- addToList proteinDetectionList.Details detail
+                proteinDetectionList
+
+           static member addDetails
+                (proteinDetectionList:ProteinDetectionList) (details:seq<CVParam>) =
+                let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
+                proteinDetectionList
+
+            static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionList) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:ProteinDetectionList) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type AnalysisDataHandler =
+           static member init
+                (             
+                    spectrumIdentificationList : seq<SpectrumIdentificationList>,
+                    ?id                        : int,
+                    ?proteinDetectionList      : ProteinDetectionList
+                ) =
+                let id'                   = defaultArg id 0
+                let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
+                {
+                    AnalysisData.ID                         = id'
+                    AnalysisData.SpectrumIdentificationList = spectrumIdentificationList |> List
+                    AnalysisData.ProteinDetectionList       = proteinDetectionList'
+                    AnalysisData.RowVersion                 = DateTime.Now
+                }
+
+           static member addProteinDetectionList
+                (analysisData:AnalysisData) (proteinDetectionList:ProteinDetectionList) =
+                analysisData.ProteinDetectionList <- proteinDetectionList
+
+            static member addToContext (context:MzIdentMLContext) (item:AnalysisData) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:AnalysisData) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type ProteinDetectionHandler =
+           static member init
+                (             
+                    proteinDetectionList     : ProteinDetectionList,
+                    proteinDetectionProtocol : ProteinDetectionProtocol,
+                    spectrumIdentifications  : seq<SpectrumIdentification>,
+                    ?id                      : int,
+                    ?name                    : string,
+                    ?activityDate            : DateTime
+                ) =
+                let id'           = defaultArg id 0
+                let name'         = defaultArg name null
+                let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
+                {
+                    ProteinDetection.ID                       = id'
+                    ProteinDetection.Name                     = name'
+                    ProteinDetection.ActivityDate             = activityDate'
+                    ProteinDetection.ProteinDetectionList     = proteinDetectionList
+                    ProteinDetection.ProteinDetectionProtocol = proteinDetectionProtocol
+                    ProteinDetection.SpectrumIdentifications  = spectrumIdentifications |> List
+                    ProteinDetection.RowVersion               = DateTime.Now
+                }
+
+           static member addName
+                (proteinDetection:ProteinDetection) (name:string) =
+                proteinDetection.Name <- name
+
+           static member addActivityDate
+                (proteinDetection:ProteinDetection) (activityDate:DateTime) =
+                proteinDetection.ActivityDate <- activityDate
+
+            static member addToContext (context:MzIdentMLContext) (item:ProteinDetection) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:ProteinDetection) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type BiblioGraphicReferenceHandler =
+           static member init
+                (             
+                    ?id          : int,
+                    ?name        : string,
+                    ?authors     : string,
+                    ?doi         : string,
+                    ?editor      : string,
+                    ?issue       : string,
+                    ?pages       : string,
+                    ?publication : string,
+                    ?publisher   : string,
+                    ?title       : string,
+                    ?volume      : string,
+                    ?year        : int
+                ) =
+                let id'          = defaultArg id 0
+                let name'        = defaultArg name null
+                let authors'     = defaultArg authors null
+                let doi'         = defaultArg doi null
+                let editor'      = defaultArg editor null
+                let issue'       = defaultArg issue null
+                let pages'       = defaultArg pages null
+                let publication' = defaultArg publication null
+                let publisher'   = defaultArg publisher null
+                let title'       = defaultArg title null
+                let volume'      = defaultArg volume null
+                let year'        = defaultArg year Unchecked.defaultof<int>
+                {
+                    BiblioGraphicReference.ID          = id'
+                    BiblioGraphicReference.Name        = name'
+                    BiblioGraphicReference.Authors     = authors'
+                    BiblioGraphicReference.DOI         = doi'
+                    BiblioGraphicReference.Editor      = editor'
+                    BiblioGraphicReference.Issue       = issue'
+                    BiblioGraphicReference.Pages       = pages'
+                    BiblioGraphicReference.Publication = publication'
+                    BiblioGraphicReference.Publisher   = publisher'
+                    BiblioGraphicReference.Title       = title'
+                    BiblioGraphicReference.Volume      = volume'
+                    BiblioGraphicReference.Year        = year'
+                    BiblioGraphicReference.RowVersion  = DateTime.Now
+                }
+
+           static member addName
+                (biblioGraphicReference:BiblioGraphicReference) (name:string) =
+                biblioGraphicReference.Name <- name
+
+           static member addAuthors
+                (biblioGraphicReference:BiblioGraphicReference) (authors:string) =
+                biblioGraphicReference.Authors <- authors
+
+           static member addDOI
+                (biblioGraphicReference:BiblioGraphicReference) (doi:string) =
+                biblioGraphicReference.DOI <- doi
+
+           static member addIssue
+                (biblioGraphicReference:BiblioGraphicReference) (issue:string) =
+                biblioGraphicReference.Issue <- issue
+
+           static member addPublication
+                (biblioGraphicReference:BiblioGraphicReference) (publication:string) =
+                biblioGraphicReference.Publication <- publication
+
+           static member addPublisher
+                (biblioGraphicReference:BiblioGraphicReference) (publisher:string) =
+                biblioGraphicReference.Publisher <- publisher
+
+           static member addTitle
+                (biblioGraphicReference:BiblioGraphicReference) (title:string) =
+                biblioGraphicReference.Title <- title
+
+           static member addVolume
+                (biblioGraphicReference:BiblioGraphicReference) (volume:string) =
+                biblioGraphicReference.Volume <- volume
+
+           static member addYear
+                (biblioGraphicReference:BiblioGraphicReference) (year:int) =
+                biblioGraphicReference.Year <- year
+
+            static member addToContext (context:MzIdentMLContext) (item:BiblioGraphicReference) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:BiblioGraphicReference) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type ProviderHandler =
+           static member init
+                (             
+                    ?id               : int,
+                    ?name             : string,
+                    ?analysisSoftware : AnalysisSoftware,
+                    ?contactRole      : ContactRole
+                ) =
+                let id'               = defaultArg id 0
+                let name'             = defaultArg name null
+                let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
+                let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
+                {
+                    ID               = id'
+                    Name             = name'
+                    AnalysisSoftware = analysisSoftware'
+                    ContactRole      = contactRole'
+                    RowVersion       = DateTime.Now
+                }
+
+           static member addName
+                (provider:Provider) (name:string) =
+                provider.Name <- name
+
+           static member addAnalysisSoftware
+                (provider:Provider) (analysisSoftware:AnalysisSoftware) =
+                provider.AnalysisSoftware <- analysisSoftware
+
+           static member addContactRole
+                (provider:Provider) (contactRole:ContactRole) =
+                provider.ContactRole <- contactRole
+
+            static member addToContext (context:MzIdentMLContext) (item:Provider) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:Provider) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
+    type MzIdentMLHandler =
+           static member init
+                (             
+                    
+                    version                        : string,
+                    ontologies                     : seq<Ontology>,
+                    spectrumIdentification         : seq<SpectrumIdentification>,
+                    spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
+                    inputs                         : Inputs,
+                    analysisData                   : AnalysisData,
+                    ?id                            : int,
+                    ?name                          : string,
+                    ?analysisSoftwares             : seq<AnalysisSoftware>,
+                    ?provider                      : Provider,
+                    ?person                        : Person,
+                    ?organization                  : Organization,
+                    ?samples                       : seq<Sample>,
+                    ?dbSequences                   : seq<DBSequence>,
+                    ?peptides                      : seq<Peptide>,
+                    ?peptideEvidences              : seq<PeptideEvidence>,
+                    ?proteinDetection              : ProteinDetection,
+                    ?proteinDetectionProtocol      : ProteinDetectionProtocol,
+                    ?biblioGraphicReferences       : seq<BiblioGraphicReference>
+                ) =
+                let id'                       = defaultArg id 0
+                let name'                     = defaultArg name null
+                let analysisSoftwares'        = convertOptionToList analysisSoftwares
+                let provider'                 = defaultArg provider Unchecked.defaultof<Provider>
+                let person'                   = defaultArg person Unchecked.defaultof<Person>
+                let organization'             = defaultArg organization Unchecked.defaultof<Organization>
+                let samples'                  = convertOptionToList samples
+                let dbSequences'              = convertOptionToList dbSequences
+                let peptides'                 = convertOptionToList peptides
+                let peptideEvidences'         = convertOptionToList peptideEvidences
+                let proteinDetection'         = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
+                let proteinDetectionProtocol' = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
+                let biblioGraphicReferences'  = convertOptionToList biblioGraphicReferences
+                {
+                    MzIdentML.ID                             = id'
+                    MzIdentML.Name                           = name'
+                    MzIdentML.Version                        = version
+                    MzIdentML.Ontologies                     = ontologies |> List
+                    MzIdentML.AnalysisSoftwares              = analysisSoftwares'
+                    MzIdentML.Provider                       = provider'
+                    MzIdentML.Person                         = person'
+                    MzIdentML.Organization                   = organization'
+                    MzIdentML.Samples                        = samples'
+                    MzIdentML.DBSequences                    = dbSequences'
+                    MzIdentML.Peptides                       = peptides'
+                    MzIdentML.PeptideEvidences               = peptideEvidences'
+                    MzIdentML.SpectrumIdentification         = spectrumIdentification |> List
+                    MzIdentML.ProteinDetection               = proteinDetection'
+                    MzIdentML.SpectrumIdentificationProtocol = spectrumIdentificationProtocol |> List
+                    MzIdentML.ProteinDetectionProtocol       = proteinDetectionProtocol'
+                    MzIdentML.Inputs                         = inputs
+                    MzIdentML.AnalysisData                   = analysisData
+                    MzIdentML.BiblioGraphicReferences        = biblioGraphicReferences' |> List
+                    MzIdentML.RowVersion                     = DateTime.Now
+                }
+
+           static member addName
+                (mzIdentML:MzIdentML) (name:string) =
+                mzIdentML.Name <- name
+
+           static member addAnalysisSoftware
+                (mzIdentML:MzIdentML) (analysisSoftware:AnalysisSoftware) =
+                let result = mzIdentML.AnalysisSoftwares <- addToList mzIdentML.AnalysisSoftwares analysisSoftware
+                mzIdentML
+
+           static member addAnalysisSoftwares
+                (mzIdentML:MzIdentML) (analysisSoftwares:seq<AnalysisSoftware>) =
+                let result = mzIdentML.AnalysisSoftwares <- addCollectionToList mzIdentML.AnalysisSoftwares analysisSoftwares
+                mzIdentML
+
+           static member addProvider
+                (mzIdentML:MzIdentML) (provider:Provider) =
+                mzIdentML.Provider <- provider
+
+           static member addPerson
+                (mzIdentML:MzIdentML) (person:Person) =
+                mzIdentML.Person <- person
+
+           static member addOrganization
+                (mzIdentML:MzIdentML) (organization:Organization) =
+                mzIdentML.Organization <- organization
+
+           static member addSample
+                (mzIdentML:MzIdentML) (sample:Sample) =
+                let result = mzIdentML.Samples <- addToList mzIdentML.Samples sample
+                mzIdentML
+
+           static member addSamples
+                (mzIdentML:MzIdentML) (samples:seq<Sample>) =
+                let result = mzIdentML.Samples <- addCollectionToList mzIdentML.Samples samples
+                mzIdentML
+
+           static member addDBSequence
+                (mzIdentML:MzIdentML) (dbSequence:DBSequence) =
+                let result = mzIdentML.DBSequences <- addToList mzIdentML.DBSequences dbSequence
+                mzIdentML
+
+           static member addDBSequences
+                (mzIdentML:MzIdentML) (dbSequences:seq<DBSequence>) =
+                let result = mzIdentML.DBSequences <- addCollectionToList mzIdentML.DBSequences dbSequences
+                mzIdentML
+
+           static member addPeptide
+                (mzIdentML:MzIdentML) (peptide:Peptide) =
+                let result = mzIdentML.Peptides <- addToList mzIdentML.Peptides peptide
+                mzIdentML
+
+           static member addPeptides
+                (mzIdentML:MzIdentML) (peptides:seq<Peptide>) =
+                let result = mzIdentML.Peptides <- addCollectionToList mzIdentML.Peptides peptides
+                mzIdentML
+
+           static member addPeptideEvidence
+                (mzIdentML:MzIdentML) (peptideEvidence:PeptideEvidence) =
+                let result = mzIdentML.PeptideEvidences <- addToList mzIdentML.PeptideEvidences peptideEvidence
+                mzIdentML
+
+           static member addPeptideEvidences
+                (mzIdentML:MzIdentML) (peptideEvidences:seq<PeptideEvidence>) =
+                let result = mzIdentML.PeptideEvidences <- addCollectionToList mzIdentML.PeptideEvidences peptideEvidences
+                mzIdentML
+
+           static member addProteinDetection
+                (mzIdentML:MzIdentML) (proteinDetection:ProteinDetection) =
+                mzIdentML.ProteinDetection <- proteinDetection
+
+           static member addProteinDetectionProtocol
+                (mzIdentML:MzIdentML) (proteinDetectionProtocol:ProteinDetectionProtocol) =
+                mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
+
+           static member addBiblioGraphicReference
+                (mzIdentML:MzIdentML) (biblioGraphicReference:BiblioGraphicReference) =
+                let result = mzIdentML.BiblioGraphicReferences <- addToList mzIdentML.BiblioGraphicReferences biblioGraphicReference
+                mzIdentML
+
+           static member addBiblioGraphicReferences
+                (mzIdentML:MzIdentML) (biblioGraphicReferences:seq<BiblioGraphicReference>) =
+                let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
+                mzIdentML
+
+            static member addToContext (context:MzIdentMLContext) (item:MzIdentML) =
+                    (addToContextWithExceptionCheck context item)
+
+            static member insert (context:MzIdentMLContext) (item:MzIdentML) =
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
+
 module test =
 //Apply functions
 

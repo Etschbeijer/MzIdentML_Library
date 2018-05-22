@@ -475,8 +475,8 @@ module EntityTypes =
           [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
           ID                           : int
           mutable Name                 : string
-          mutable numSequencesSearched : int
-          mutable FragmentationTable   : List<Measure>
+          mutable NumSequencesSearched : int
+          mutable FragmentationTables  : List<Measure>
           SpectrumIdentificationResult : List<SpectrumIdentificationResult>
           mutable Details              : List<CVParam>
           RowVersion                   : DateTime
@@ -530,11 +530,11 @@ module EntityTypes =
          Inputs =
          {
           [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-          ID                     : int
-          mutable SourceFile     : List<SourceFile>
-          mutable SearchDatabase : List<SearchDatabase>
-          SpectraData            : List<SpectraData>
-          RowVersion             : DateTime
+          ID                      : int
+          mutable SourceFiles     : List<SourceFile>
+          mutable SearchDatabases : List<SearchDatabase>
+          SpectraData             : List<SpectraData>
+          RowVersion              : DateTime
          }
 
     ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
@@ -593,7 +593,7 @@ module EntityTypes =
           [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
           ID                           : int
           SpectrumIdentificationList   : List<SpectrumIdentificationList>
-          mutable ProteinDetectionList : List<ProteinDetectionList>
+          mutable ProteinDetectionList : ProteinDetectionList
           RowVersion                   : DateTime
          }
 
@@ -623,7 +623,7 @@ module EntityTypes =
           mutable Editor     : string
           mutable Issue      : string
           mutable Pages      : string
-          mutable Pubication : string
+          mutable Publication : string
           mutable Publisher  : string
           mutable Title      : string
           mutable Volume     : string
@@ -640,6 +640,7 @@ module EntityTypes =
           mutable Name             : string
           mutable AnalysisSoftware : AnalysisSoftware
           mutable ContactRole      : ContactRole
+          RowVersion               : DateTime
          }
 
     ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results (spectrum identifications or protein detection results). 
@@ -657,7 +658,7 @@ module EntityTypes =
           mutable Samples                  : List<Sample>
           mutable DBSequences              : List<DBSequence>
           mutable Peptides                 : List<Peptide>
-          mutable PeptideEvidence          : List<PeptideEvidence>
+          mutable PeptideEvidences         : List<PeptideEvidence>
           SpectrumIdentification           : List<SpectrumIdentification>
           mutable ProteinDetection         : ProteinDetection
           SpectrumIdentificationProtocol   : List<SpectrumIdentificationProtocol>
