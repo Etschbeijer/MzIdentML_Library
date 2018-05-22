@@ -2,13 +2,9 @@ namespace MzIdentMLDataBase
 
 module InsertStatements =
 
-    //open Entities_DBContext_EasyVersion
     open DataContext
     open DataContext.EntityTypes
     open DataContext.DataContext
-
-
-
     open System
     //open System.ComponentModel.DataAnnotations
     //open System.ComponentModel.DataAnnotations.Schema
