@@ -638,6 +638,7 @@ module EntityTypes =
           [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
           ID                       : int
           mutable Name             : string
+          //Formerly AnalysisSoftware_Ref
           mutable AnalysisSoftware : AnalysisSoftware
           mutable ContactRole      : ContactRole
           RowVersion               : DateTime
@@ -650,21 +651,37 @@ module EntityTypes =
           ID                               : int
           mutable Name                     : string
           Version                          : string
+          //Formerly CVList
           Ontologies                       : List<Ontology>
+          //
+          //Formerly AnalysisSoftwareList
           mutable AnalysisSoftwares        : List<AnalysisSoftware>
+          //
           mutable Provider                 : Provider
+          //Formerly AuditCollection
           mutable Person                   : Person
           mutable Organization             : Organization
+          //
+          //Formerly AnalysisSampleCollection
           mutable Samples                  : List<Sample>
+          //
+          //Formerly SequenceCollection
           mutable DBSequences              : List<DBSequence>
           mutable Peptides                 : List<Peptide>
           mutable PeptideEvidences         : List<PeptideEvidence>
+          //
+          //AnalysisCollection
           SpectrumIdentification           : List<SpectrumIdentification>
           mutable ProteinDetection         : ProteinDetection
+          //
+          //AnalysisProtocolCollection
           SpectrumIdentificationProtocol   : List<SpectrumIdentificationProtocol>
           mutable ProteinDetectionProtocol : ProteinDetectionProtocol
+          //
+          //DataCollection
           Inputs                           : Inputs
           AnalysisData                     : AnalysisData
+          //
           mutable BiblioGraphicReferences  : List<BiblioGraphicReference> 
           RowVersion                       : DateTime
          }
