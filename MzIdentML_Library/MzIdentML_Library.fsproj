@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="InsertStatements_EasyVersion.fs" />
-    <Compile Include="MzIdentML-DataContext_EasyVersion.fs" />
     <Compile Include="MzIdentML-DataContext.fs" />
+    <Compile Include="MzIdentML-DataContext_EasyVersion.fs" />
+    <Compile Include="InsertStatements_EasyVersion.fs" />
     <Compile Include="InsertStatements.fs" />
   </ItemGroup>
 
@@ -35,9 +35,6 @@
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
       <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="MzIdentML_Library">
-      <HintPath>bin\Debug\netstandard2.0\MzIdentML_Library.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq">
       <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Remotion.Linq.dll</HintPath>
