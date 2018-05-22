@@ -643,19 +643,19 @@ module DataContext =
              BiblioGraphicReference =
              {
               [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-              ID                 : int
-              mutable Name       : string
-              mutable Authors    : string
-              mutable DOI        : string
-              mutable Editor     : string
-              mutable Issue      : string
-              mutable Pages      : string
+              ID                  : int
+              mutable Name        : string
+              mutable Authors     : string
+              mutable DOI         : string
+              mutable Editor      : string
+              mutable Issue       : string
+              mutable Pages       : string
               mutable Publication : string
-              mutable Publisher  : string
-              mutable Title      : string
-              mutable Volume     : string
-              mutable Year       : int
-              RowVersion         : DateTime
+              mutable Publisher   : string
+              mutable Title       : string
+              mutable Volume      : string
+              mutable Year        : int
+              RowVersion          : DateTime
              }
 
         ///The Provider of the mzIdentML record in terms of the contact and software.
