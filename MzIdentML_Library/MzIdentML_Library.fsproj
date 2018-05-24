@@ -24,60 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="BioFSharp">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="BioFSharp.IO">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Care">
-      <HintPath>..\..\BioFSharp.Mz\src\BioFSharp.Mz\bin\Debug\FSharp.Care.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Care.IO">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\FSharp.Care.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.Sqlite">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.Data.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Relational">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.Linq">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Remotion.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.batteries_green">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\SQLitePCLRaw.batteries_green.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.batteries_v2">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\SQLitePCLRaw.batteries_v2.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.core">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\SQLitePCLRaw.core.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.provider.e_sqlite3">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework64\v4.0.30319\System.ComponentModel.DataAnnotations.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SqlClient">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\System.Data.SqlClient.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\System.Data.SQLite.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="FilesForBuilding\cs\FSharp.Core.resources.dll" />
     <None Include="FilesForBuilding\de\FSharp.Core.resources.dll" />
     <None Include="FilesForBuilding\en\FSharp.Core.resources.dll" />
@@ -100,6 +46,13 @@
     <None Include="XML_Files\MzIdentMLScheme1_2.xsd" />
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid" />
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid.gz" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.3" />
   </ItemGroup>
 
 </Project>
